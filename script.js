@@ -9,25 +9,34 @@ function getRecipe() {
     })
 }
 
+const searchBar = document.getElementById("searchbar")
+const submit = document.querySelector(".submitSearch")
+
+
+
+
+const mainCard = ``
+
 
 
 getRecipe().then(data => {
+
   const recipeGrid = data.recipes
-let ingredientList = ""
-let ingredientQuantity = ""
-let ingredientUnit = ""
+  let ingredientList = ""
+  let ingredientQuantity = ""
+  let ingredientUnit = ""
   const recipeCard = document.querySelector(".recipe-list")
-    recipeGrid.map(elem => {
+  recipeGrid.map(elem => {
 
-      const ingredient = elem.ingredients
-      ingredient.forEach(element => {
-        ingredientList = element.ingredient
-        ingredientQuantity = element.quantity
-        ingredientUnit = element.unit
-        
-      });
+    const ingredient = elem.ingredients
+    ingredient.forEach(element => {
+      ingredientList = element.ingredient
+      ingredientQuantity = element.quantity
+      ingredientUnit = element.unit
 
-      const newDiv = document.createElement("section")
+    });
+
+    const newDiv = document.createElement("section")
     newDiv.innerHTML = `      <section class="recipe-card">
 <div class="recipe-img">
 
@@ -59,64 +68,30 @@ let ingredientUnit = ""
 </div>
 </section>`
 
-recipeCard.appendChild(newDiv)
+    recipeCard.appendChild(newDiv)
 
 
 
 
+  })
 
-} )
+  //test tri
 
-const test = document.querySelectorAll(".content-ingredient")
-let newTest = [...test]
-console.log(newTest)
+  const div = document.querySelector(".recipe-list")
+  const grid = document.querySelectorAll("section")
+  console.log(div, grid)
+  submit.addEventListener("click", e => {
 
+
+    console.log(data.recipes)
+    const allRecipes = data.recipes
+    // div.removeChild(grid)
+    const filter = allRecipes.filter(e => e.name.includes(searchBar.value))
+    console.log(filter)
+  })
+
+  ///fin test ti
 
 
 })
 
-
-
-
-//Dom targeting
-
-// const recipeList = document.querySelector(".recipe-list")
-// console.log(recipeList)
-
-// function createCard(p) {
-//   recipeList.innerHTML = `      <section class="recipe-card">
-// <div class="recipe-img">
-
-// </div>
-// <div class="recipe-content">
-//   <div class="content-title">
-//     <div class="title">
-      
-//     </div>
-//     <div class="duration">
-//       <div class="clock">
-//         <span> <img src="assets/svg/clock.svg" class="clock-img" /></span>
-//       </div>
-//       <div class="timer">
-//         <p>10 min</p>
-//       </div>
-//     </div>
-
-//   </div>
-//   <div class="content-recipe">
-//     <div class="content-ingredient">
-//       <p class="ingredient">
-//         <strong>couscous:</strong> 1 kilo
-//       </p>
-
-//     </div>
-//     <div class="content-description">
-//       <p class="description">eazezaezae</p>
-//     </div>
-//   </div>
-
-// </div>
-
-// </section>`
-
-// }
