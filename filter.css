@@ -1,0 +1,71 @@
+
+.sort-options {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  margin-top: 20px
+}
+
+.sort-button {
+  width: 100%;
+  height: 70px;
+  border: none;
+  border-radius: 5px;
+  color: white
+}
+
+.sort-button-all {
+  border-radius: 5px;
+  width: 15%;
+
+}
+
+
+.filters-ingredient, .filters-device, .filters-utensil {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center
+  
+}
+
+
+.filter-grid {
+  width: 28%;
+  color: white
+
+}
+
+
+.open-blue {
+  width: 45%;
+  background-color: #3282F7;
+}
+
+
+
+.open-green {
+  width: 45%;
+  background-color: #68D9A4;
+}
+
+
+
+.open-red {
+  width: 45%;
+  background-color: #ED6454;
+}
+
+.blue {
+  background-color: #3282F7;
+}
+
+
+.green {
+  background-color: #68D9A4;
+}
+
+
+.red {
+  background-color: #ED6454;
+}
+
