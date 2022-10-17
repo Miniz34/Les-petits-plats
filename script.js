@@ -174,12 +174,12 @@ getRecipe()
       elem.addEventListener("click", e => {
         e.preventDefault()
         recipeGrid.map(recipe => {
-          console.log(recipe.ingredients)
           const recipeList = recipe.ingredients
           console.log(elem.innerText)
+          console.log(recipeList)
 
           const recipeFilter = recipeList.filter(filter => filter.ingredient === elem.innerText)
-          // console.log("résultars trouvé pour" + elem.innerText + recipeFilter)
+          console.log(recipeFilter)
         })
         // submit.click()
       })
@@ -195,6 +195,7 @@ getRecipe()
           elem.addEventListener("click", e => {
             e.preventDefault()
             console.log(elem.innerText)
+
           })
         })
       })
@@ -257,6 +258,8 @@ const getCardFilters = (card) => {
     deviceFilter.push(appliance)
 
   })
+
+  console.log(allFilter)
 
 
 
