@@ -72,8 +72,31 @@ const filterCards = (value, data, tags) => {
   collection.forEach(elem => elem.style.display = "none")
 
 
+
+
+  // const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase())) 
+  // const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase()) || e.appliance.toLowerCase().includes(value.toLowerCase()))
+
+
+  //.find() ou .some cause un conflit avec e.name
+  const filtered = allRecipes.filter(
+    (e) =>
+      e.name.toLowerCase().includes(value.toLowerCase()) ||
+      e.appliance.toLowerCase().includes(value.toLowerCase())
+      ||
+      e.ingredients.find((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
+      e.ustensils.find((el) => el.toLowerCase().includes(value.toLowerCase()))
+  )
+
+
+  if (filtered.length > 0) {
+    filtered.map(card => card.element.style.display = "block")
+  } else {
+    noResult.style.display = "block"
+  }
+
   tags = [{}]
-  allRecipes.map(i => {
+  filtered.map(i => {
     i.ustensils.map(u => {
       if (tags.indexOf(u) < 0) tags.push({ type: "utensil", name: `${u}` })
     })
@@ -83,17 +106,7 @@ const filterCards = (value, data, tags) => {
     if (tags.indexOf(i.appliance) < 0) tags.push({ type: "appliance", name: `${i.appliance}` })
   })
 
-  // const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase())) 
-
-  const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase()))
-  console.log(value)
-
-  if (filtered.length > 0) {
-    filtered.map(card => card.element.style.display = "block")
-  } else {
-    noResult.style.display = "block"
-  }
-
+  console.log(tags)
 
   // console.log(tags)
 
@@ -161,13 +174,19 @@ const getCardFilters = (cards) => {
 
   cards.map(i => {
     i.ustensils.map(u => {
-      if (utensilFilter.indexOf(u) < 0) utensilFilter.push(u)
+      if (utensilFilter.indexOf(u.toLowerCase()) < 0) utensilFilter.push(u.toLowerCase())
     })
     i.ingredients.map(u => {
-      if (ingredientFilter.indexOf(u.ingredient) < 0) ingredientFilter.push(u.ingredient)
+      if (ingredientFilter.indexOf(u.ingredient.toLowerCase()) < 0) ingredientFilter.push(u.ingredient.toLowerCase())
     })
-    if (deviceFilter.indexOf(i.appliance) < 0) deviceFilter.push(i.appliance)
+    if (deviceFilter.indexOf(i.appliance.toLowerCase()) < 0) deviceFilter.push(i.appliance.toLowerCase())
   })
+
+
+  //filtrer accent
+  ingredientFilter.sort()
+  utensilFilter.sort()
+  deviceFilter.sort()
 
 
 
@@ -279,7 +298,6 @@ window.onload = () => {
       searchbar.addEventListener("input", () => {
         if (searchBar.value.length >= 3) {
           let filtered = filterCards(searchBar.value, data)
-          console.log(searchBar.value)
           getCardFilters(filtered)
         }
         renderError()
@@ -319,6 +337,7 @@ window.onload = () => {
         f.addEventListener("click", e => {
           console.log(f.innerText)
           let filtered = filterCards(f.innerText, data)
+
           getCardFilters(filtered)
           console.log(filtered)
         })
