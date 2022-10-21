@@ -32,13 +32,9 @@ font-size: 18px;
   gap: 50px;
   justify-content: center;
   width: 95%;
-
-  
-
 }
 
-.recipe-card
-{
+.recipe-card {
   border: 2px solid black;
   width: 25%;
   height: 480px;
@@ -50,11 +46,17 @@ font-size: 18px;
   height: 50%;
 }
 
-.recipe-content {
+.recipe-header {
   display: flex;
   flex-direction: column;
   background: #E7E7E7
+}
 
+.recipe-main {
+  display: flex;
+  flex-direction: row;
+  background: #E7E7E7;
+  justify-content: space-between;
 }
 
 .content-title {

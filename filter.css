@@ -7,27 +7,35 @@
 }
 
 .sort-button {
-  width: 100%;
+  width: 120px;
   height: 70px;
   border: none;
   border-radius: 5px;
-  color: white
+  color: white;
+  position : relative;
 }
 
 .sort-button-all {
   border-radius: 5px;
   width: 15%;
-
 }
 
 
 .filters-ingredient, .filters-device, .filters-utensil {
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center
-  
+  justify-content: center;
+  position : absolute;
+  max-width : 800px;
+  width : 60%;
+  left : 0;
 }
 
+.filter-container {
+  min-height: 50px;
+  max-height : 300px;
+  overflow-y : auto;
+}
 
 .filter-grid {
   width: 28%;
@@ -69,3 +77,22 @@
   background-color: #ED6454;
 }
 
+.selected {
+  display: flex;
+  gap : 50px;
+}
+
+.selected-list {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  color: white;
+}
+
+.close-img {
+  height: 18px;
+  margin-left: 10px;
+}

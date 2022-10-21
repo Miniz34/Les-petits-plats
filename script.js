@@ -1,19 +1,48 @@
 let recipe = []
 
-
 function getRecipe() {
   return fetch("/assets/recipes.json")
     .then(response => response.json())
 }
 
-const searchBar = document.getElementById("searchbar")
-const submit = document.querySelector(".submitSearch")
 
-function renderIngredients(card) {
-  return card.ingredients.map(i =>
-    `<p class="ingredient"><strong> ${i.ingredient}</strong> ${i.quantity ? ":" + i.quantity + (i.unit ? i.unit : "") : ""} </p>`
-  ).join("")
+// Card Renderer (object that contains a method for each element to display)
+const CardRenderer = {
+  preview: (card) => `<div class="recipe-img"></div>`,
+
+  name: (card) => `<div class="content-title"><div class="title">${card.name}</div>`,
+
+  ingredient: (i) => `<p class="ingredient"> <strong> ${i.ingredient}</strong> ${i.quantity ? ":" + i.quantity + (i.unit ? i.unit : "") : ""} </p>`,
+
+  ingredients: (card) => `<div class="content-ingredient"><div class="ingredients">${card.ingredients.map(i => CardRenderer.ingredient(i)).join("")}</div></div>`,
+
+  duration: (card) => `<div class="duration">
+			<div class="clock"><span><img src="assets/svg/clock.svg" class="clock-img" /></span></div>
+			<div class="timer"><p>${card.time} min</p></div>
+		</div>`,
+
+  description: (card) => `<div class="content-description"><p class="description">${card.description}</p></div>`,
+
+  card: (card) => {
+    card.element = document.createElement("article")
+    card.element.classList.add("recipe-card")
+    card.element.card = card;
+    card.element.innerHTML = `
+		${CardRenderer.preview(card)}
+		<div class="recipe-header">
+			${CardRenderer.name(card)}
+			${CardRenderer.duration(card)}
+		</div>
+
+		<div class="recipe-main">
+			${CardRenderer.ingredients(card)}
+			${CardRenderer.description(card)}
+		</div>`
+    return card.element
+  }
 }
+
+
 
 /////////Nouveau code//////////
 function renderError(card) {
@@ -27,73 +56,19 @@ function renderError(card) {
 }
 renderError()
 
-function renderFilterIngredient() {
-  const optionButton = document.querySelector(".sort-by-ingredient")
-  const div = document.createElement("div")
-  div.classList.add("filters-ingredient")
-  div.style.display = "none"
-  optionButton.appendChild(div)
-}
-renderFilterIngredient()
-
-function renderFilterDevice() {
-  const optionButton = document.querySelector(".sort-by-device")
-  const div = document.createElement("div")
-  div.classList.add("filters-device")
-  div.style.display = "none"
-  optionButton.appendChild(div)
-}
-renderFilterDevice()
-
-function renderFilterUtensil() {
-  const optionButton = document.querySelector(".sort-by-utensil")
-  const div = document.createElement("div")
-  div.classList.add("filters-utensil")
-  div.style.display = "none"
-  optionButton.appendChild(div)
-}
-renderFilterUtensil()
 
 /////////fin//////////
 
-function renderCard(card) {
-  const div = document.createElement("article")
-  div.classList.add("recipe-card")
-  div.innerHTML = `  <div class="recipe-img"></div>
-  <div class="recipe-content">
-    <div class="content-title">
-      <div class="title">
-       ${card.name} gérard
-      </div>
-      <div class="duration">
-        <div class="clock">
-          <span> <img src="assets/svg/clock.svg" class="clock-img" /></span>
-        </div>
-        <div class="timer">
-          <p>${card.time} min</p>
-        </div>
-      </div>
-    </div>
-    <div class="content-recipe">
-      <div class="content-ingredient">
-        <div class="ingredients">
-           ${renderIngredients(card)}
-        </div>
-      </div>
-      <div class="content-description">
-        <p class="description">${card.description}</p>
-      </div>
-    </div>
-  </div>`
-  card.element = div
-  return div
-}
+
+const filterCards = (value, data, tags) => {
 
 
-let filtered = []
-const displayCards = (data) => {
+  console.log(value)
+  const searchBar = document.getElementById("searchbar")
+  const submit = document.querySelector(".submitSearch")
 
-  console.log(data.recipes)
+
+
   const allRecipes = data.recipes
   // recipeCards.innerHTML = ""
   // const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(searchBar.value.toLowerCase()))
@@ -103,116 +78,82 @@ const displayCards = (data) => {
   const noResult = document.querySelector(".recipe-none")
   collection.forEach(elem => elem.style.display = "none")
 
-  filtered = allRecipes.filter(e => e.name.toLowerCase().includes(searchBar.value.toLowerCase()))
-  if (filtered != 0) {
+  const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase()))
+  if (filtered.length > 0) {
     filtered.map(card => card.element.style.display = "block")
-    console.log(filtered)
   } else {
     noResult.style.display = "block"
-
   }
 
-}
 
-getRecipe()
-  .then(data => {
-
-    const recipeGrid = data.recipes
-    console.log(recipeGrid)
-    console.log(data)
-    let ingredientList = ""
-    let ingredientQuantity = ""
-    let ingredientUnit = ""
-    const recipeCards = document.querySelector(".recipe-list")
-    recipeGrid.map(card => recipeCards.appendChild(renderCard(card)))
-
-    const grid = document.querySelectorAll("section")
-    submit.addEventListener("click", () => displayCards(data))
-    searchbar.addEventListener("input", () => {
-      if (searchBar.value.length >= 3)
-
-        displayCards(data)
-
-    }
-
-    )
-
-
-    /////////Nouveau code//////////
-    //Redirections erreur
-    const tarte = document.querySelector(".test-tarte")
-    const error = document.querySelector(".test-error")
-    const salade = document.querySelector(".test-salad")
-    const noResult = document.querySelector(".recipe-none")
-
-    tarte.addEventListener("click", e => {
-      e.preventDefault()
-      searchBar.value = "tarte"
-      submit.click()
-      noResult.style.display = "none"
+  tags = [{}]
+  filtered.map(i => {
+    i.ustensils.map(u => {
+      if (tags.indexOf(u) < 0) tags.push({ type: "utensil", name: `${u}` })
     })
-
-    salade.addEventListener("click", e => {
-      e.preventDefault()
-      searchBar.value = "salade"
-      submit.click()
-      noResult.style.display = "none"
-
+    i.ingredients.map(u => {
+      if (tags.indexOf(u.ingredient) < 0) tags.push({ type: "ingredient", name: `${u.ingredient}` })
     })
-
-    getCardFilters(data)
-
-
-    const filterValue = [...document.querySelectorAll(".filter-value")]
-
-    console.log(filterValue)
-
-
-
-    ///Tentative de filtrer par Tag n°1
-    filterValue.forEach(elem => {
-      elem.addEventListener("click", e => {
-        e.preventDefault()
-        recipeGrid.map(recipe => {
-          const recipeList = recipe.ingredients
-          console.log(elem.innerText)
-          console.log(recipeList)
-
-          const recipeFilter = recipeList.filter(filter => filter.ingredient === elem.innerText)
-          console.log(recipeFilter)
-        })
-        // submit.click()
-      })
-    })
-
-
-
-    ///Tentative de filtrer par Tag n°2 (n° 3 ligne 339)
-    recipeGrid.map(recipe => {
-      recipe.ingredients.map(ingredient => {
-        filterValue.forEach(elem => {
-
-          elem.addEventListener("click", e => {
-            e.preventDefault()
-            console.log(elem.innerText)
-
-          })
-        })
-      })
-    })
-
-
-
+    if (tags.indexOf(i.appliance) < 0) tags.push({ type: "appliance", name: `${i.appliance}` })
   })
+
+
+  filtered.filter(card => {
+    // console.log(card)
+    tags.filter(i => {
+      switch (i.type) {
+        case "ingredient":
+          // console.log(card)
+          // console.log(i.type)
+
+          break;
+        case "appliance":
+          // console.log("tags")
+          break;
+        case "utensil":
+          // console.log("tags")
+          break;
+        default:
+      }
+    })
+  })
+
+
+  if (tags.length < 1) return filtered
+
+
+  /* Filtering the cards based on the tags. */
+  const filteredTags = filtered.filter(card => {
+    // console.log(card)
+    if (tags.filter(t => {
+      switch (t.type) {
+        case "ingredient":
+          const test = card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase())
+          if (test) {
+          }
+          break;
+
+        case "utensil":
+          return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase())
+          break;
+
+        case "appliance":
+          return card.appliance.toLowerCase() === t.name.toLowerCase()
+          break;
+      }
+    }).length > 0) return card
+  })
+
+
+  console.log(filteredTags)
+  return filteredTags
+}
 
 
 /////////GET filtres 
 
 
-const getCardFilters = (card) => {
-
-
-  const fillerClose = document.querySelector(".fillerclose")
+const getCardFilters = (cards) => {
 
 
   //DOM ingrédients
@@ -234,32 +175,24 @@ const getCardFilters = (card) => {
 
   //Value fitre
 
-
-
-
   //Cration array
   const allFilter = [{ ingredients: [], ustentils: [], appliance: [] }]
+
   const ingredientFilter = allFilter[0].ingredients
   const utensilFilter = allFilter[0].ustentils
   const deviceFilter = allFilter[0].appliance
 
-
-  const recipeGrid = card.recipes
-  recipeGrid.map(i => {
-    const usentils = i.ustensils
-    usentils.map(u => {
-      utensilFilter.push(u)
+  cards.map(i => {
+    i.ustensils.map(u => {
+      if (utensilFilter.indexOf(u) < 0) utensilFilter.push(u)
     })
-    const ingredients = i.ingredients
-    ingredients.map(u => {
-      ingredientFilter.push(u.ingredient)
+    i.ingredients.map(u => {
+      if (ingredientFilter.indexOf(u.ingredient) < 0) ingredientFilter.push(u.ingredient)
     })
-    const appliance = i.appliance
-    deviceFilter.push(appliance)
-
+    if (deviceFilter.indexOf(i.appliance) < 0) deviceFilter.push(i.appliance)
   })
 
-  console.log(allFilter)
+
 
 
 
@@ -271,28 +204,12 @@ const getCardFilters = (card) => {
     ingredientFilterDisplay.appendChild(newIngr)
   })
 
-  ingredientButton.addEventListener("click", e => {
-    ingredientFilterDisplay.style.display = "flex"
-    ingredientButton.classList.add("open-blue")
-    blue.innerHTML = "Rechercher un ingrédient"
-    blue.style.opacity = 0.7
-  })
-
-
-
   //add device
   deviceFilter.forEach(e => {
     const newDevice = document.createElement("p")
     newDevice.classList.add("filter-grid")
     newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
     deviceFilterDisplay.appendChild(newDevice)
-  })
-
-  deviceButton.addEventListener("click", e => {
-    deviceFilterDisplay.style.display = "flex"
-    deviceButton.classList.add("open-green")
-    green.innerHTML = "Rechercher un ingrédient"
-    green.style.opacity = 0.7
   })
 
   //add utensil
@@ -303,65 +220,152 @@ const getCardFilters = (card) => {
     utensilFilterDisplay.appendChild(newUtensil)
   })
 
-  utensilButton.addEventListener("click", e => {
-    utensilFilterDisplay.style.display = "flex"
-    utensilButton.classList.add("open-red")
-    red.innerHTML = "Rechercher un ingrédient"
-    red.style.opacity = 0.7
-  })
 
 
-  ///Bouton fermeture filtre filler en attendant de régler le blur
-
-
-  fillerClose.onclick = event => {
-    ingredientFilterDisplay.style.display = "none"
-    ingredientButton.classList.remove("open-blue")
-
-    deviceFilterDisplay.style.display = "none"
-    deviceButton.classList.remove("open-green")
-
-    utensilFilterDisplay.style.display = "none"
-    utensilButton.classList.remove("open-red")
-
-    blue.innerHTML = "Ingrédients"
-    blue.style.opacity = 1
-
-    green.innerHTML = "Appareils"
-    green.style.opacity = 1
-
-    red.innerHTML = "Usentiles"
-    red.style.opacity = 1
-
-    console.log("trigger")
-  }
-
-
-
-
-  ///Tentative de filtrer par Tag n°3
-
-
-  // const filterValue = [...document.querySelectorAll(".filter-value")]
-
-  // console.log(filterValue)
-
-  // filterValue.forEach(elem => {
-  //   elem.addEventListener("click", e => {
-  //     e.preventDefault()
-  //     searchBar.value = elem.innerText
-  //     submit.click()
-  //     console.log(elem.innerText)
-
-
-  //     // submit.click()
-  //   })
-  // })
-
-
-
-  console.log(allFilter)
-
-  // [{ type: "appliance" }]
 }
 
+
+
+
+
+
+
+window.onload = () => {
+
+  const searchBar = document.getElementById("searchbar")
+  const submit = document.querySelector(".submitSearch")
+
+  const filters = [
+    {
+      name: 'Ingrédients',
+      key: 'ingredient',
+      color: "blue",
+      button: null,
+      list: null
+    },
+    {
+      name: "Appareils",
+      key: 'device',
+      color: "green",
+      button: null,
+      list: null
+    },
+    {
+      name: "Ustensiles",
+      key: 'utensil',
+      color: "red",
+      button: null,
+      list: null
+    }
+  ]
+
+  let filterOver = null
+  const switchFilter = (filter) => {
+    filters.map(f => f.list.style.display = 'none')
+
+    if (filterOver === filter) {
+      filterOver = null
+      return
+    }
+
+    filter.list.style.display = 'flex'
+    filterOver = filter
+  }
+
+  filters.map(f => {
+    const container = document.querySelector(".sort-by-" + f.key)
+    f.button = document.createElement("button")
+    f.button.textContent = f.name
+    f.button.classList.add("sort-button", f.color)
+    f.list = document.createElement("div")
+    f.list.classList.add(f.color, "filters-" + f.key, "filter-container")
+    f.list.style.display = "none"
+    container.appendChild(f.button)
+    container.appendChild(f.list)
+    f.button.onclick = () => { switchFilter(f) }
+  })
+
+  getRecipe()
+    .then(data => {
+
+      const recipeGrid = data.recipes
+      const recipeCards = document.querySelector(".recipe-list")
+      recipeGrid.map(card => recipeCards.appendChild(CardRenderer.card(card)))
+
+      const grid = document.querySelectorAll("section")
+      submit.addEventListener("click", () => {
+        let filtered = filterCards(searchBar.value, data)
+        getCardFilters(filtered)
+      })
+
+
+      searchbar.addEventListener("input", () => {
+        if (searchBar.value.length >= 3) {
+          let filtered = filterCards(searchBar.value, data)
+          getCardFilters(filtered)
+        }
+        renderError()
+
+      })
+
+      let filtered = filterCards(searchBar.value, data)
+      getCardFilters(filtered)
+
+      //Redirections erreur
+      const tarte = document.querySelector(".test-tarte")
+      const error = document.querySelector(".test-error")
+      const salade = document.querySelector(".test-salad")
+      const noResult = document.querySelector(".recipe-none")
+
+      tarte.addEventListener("click", e => {
+        e.preventDefault()
+        searchBar.value = "tarte"
+        submit.click()
+        noResult.style.display = "none"
+      })
+
+      salade.addEventListener("click", e => {
+        e.preventDefault()
+        searchBar.value = "salade"
+        submit.click()
+        noResult.style.display = "none"
+
+      })
+
+
+      const getFilters = [...document.querySelectorAll(".filter-value")]
+      const choiceTest = document.querySelector(".selected")
+
+
+
+
+
+      getFilters.forEach(f => {
+        f.addEventListener("click", e => {
+          // choiceTest.innerHTML = f.innerText
+          const div = document.createElement("div")
+          div.classList.add("selected-list", "blue")
+          // div.setAttribute("style", "background-color:blue")
+          div.innerHTML = f.innerText + `<img src="assets/svg/close.svg" class="close-img close-filter" />`
+          choiceTest.appendChild(div)
+
+          const closeFilter = [...document.querySelectorAll(".close-filter")]
+
+          closeFilter.forEach(e => {
+            e.addEventListener("click", e => {
+              choiceTest.removeChild(div)
+
+            })
+          })
+
+
+        })
+      })
+
+
+    })
+
+}
+
+
+/* <button class="close-filter"></button> */ 
