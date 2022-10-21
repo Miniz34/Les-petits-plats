@@ -130,19 +130,40 @@ getFilters.forEach(f => {
 
 
 
-  // console.log(tags.ingredient)
+// console.log(tags.ingredient)
 
-  // let tagsIngredient = []
-  // let tagsAppliance = []
-  // let tagsUtensil = []
+// let tagsIngredient = []
+// let tagsAppliance = []
+// let tagsUtensil = []
 
-  // tags.filter(o => {
-  //   tagsIngredient = o.ingredients
-  //   tagsAppliance = o.appliance
-  //   tagsUtensil = o.ustentils
-  // })
+// tags.filter(o => {
+//   tagsIngredient = o.ingredients
+//   tagsAppliance = o.appliance
+//   tagsUtensil = o.ustentils
+// })
 
-  // console.log(tagsIngredient, deviceFilter, tagsUtensil)
+// console.log(tagsIngredient, deviceFilter, tagsUtensil)
 
 
-  // filter tags
+// filter tags
+
+
+filtered.filter(card => {
+  // console.log(card)
+  tags.filter(i => {
+    switch (i.type) {
+      case "ingredient":
+        // console.log(card)
+        // console.log(i.type)
+
+        break;
+      case "appliance":
+        // console.log("tags")
+        break;
+      case "utensil":
+        // console.log("tags")
+        break;
+      default:
+    }
+  })
+})

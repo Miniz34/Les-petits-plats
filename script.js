@@ -5,7 +5,6 @@ function getRecipe() {
     .then(response => response.json())
 }
 
-
 // Card Renderer (object that contains a method for each element to display)
 const CardRenderer = {
   preview: (card) => `<div class="recipe-img"></div>`,
@@ -43,8 +42,6 @@ const CardRenderer = {
 }
 
 
-
-/////////Nouveau code//////////
 function renderError(card) {
   const recipeCards = document.querySelector(".recipe-list")
   const main = document.querySelector("main")
@@ -57,13 +54,9 @@ function renderError(card) {
 renderError()
 
 
-/////////fin//////////
-
-
 const filterCards = (value, data, tags) => {
 
 
-  console.log(value)
   const searchBar = document.getElementById("searchbar")
   const submit = document.querySelector(".submitSearch")
 
@@ -78,16 +71,9 @@ const filterCards = (value, data, tags) => {
   const noResult = document.querySelector(".recipe-none")
   collection.forEach(elem => elem.style.display = "none")
 
-  const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase()))
-  if (filtered.length > 0) {
-    filtered.map(card => card.element.style.display = "block")
-  } else {
-    noResult.style.display = "block"
-  }
-
 
   tags = [{}]
-  filtered.map(i => {
+  allRecipes.map(i => {
     i.ustensils.map(u => {
       if (tags.indexOf(u) < 0) tags.push({ type: "utensil", name: `${u}` })
     })
@@ -97,27 +83,19 @@ const filterCards = (value, data, tags) => {
     if (tags.indexOf(i.appliance) < 0) tags.push({ type: "appliance", name: `${i.appliance}` })
   })
 
+  // const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase())) 
 
-  filtered.filter(card => {
-    // console.log(card)
-    tags.filter(i => {
-      switch (i.type) {
-        case "ingredient":
-          // console.log(card)
-          // console.log(i.type)
+  const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase()))
+  console.log(value)
 
-          break;
-        case "appliance":
-          // console.log("tags")
-          break;
-        case "utensil":
-          // console.log("tags")
-          break;
-        default:
-      }
-    })
-  })
+  if (filtered.length > 0) {
+    filtered.map(card => card.element.style.display = "block")
+  } else {
+    noResult.style.display = "block"
+  }
 
+
+  // console.log(tags)
 
   if (tags.length < 1) return filtered
 
@@ -128,9 +106,7 @@ const filterCards = (value, data, tags) => {
     if (tags.filter(t => {
       switch (t.type) {
         case "ingredient":
-          const test = card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase())
-          if (test) {
-          }
+          return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase())
           break;
 
         case "utensil":
@@ -144,10 +120,11 @@ const filterCards = (value, data, tags) => {
     }).length > 0) return card
   })
 
-
-  console.log(filteredTags)
+  // console.log(filteredTags)
   return filteredTags
 }
+
+
 
 
 /////////GET filtres 
@@ -302,6 +279,7 @@ window.onload = () => {
       searchbar.addEventListener("input", () => {
         if (searchBar.value.length >= 3) {
           let filtered = filterCards(searchBar.value, data)
+          console.log(searchBar.value)
           getCardFilters(filtered)
         }
         renderError()
@@ -333,9 +311,18 @@ window.onload = () => {
       })
 
 
+
       const getFilters = [...document.querySelectorAll(".filter-value")]
       const choiceTest = document.querySelector(".selected")
 
+      getFilters.forEach(f => {
+        f.addEventListener("click", e => {
+          console.log(f.innerText)
+          let filtered = filterCards(f.innerText, data)
+          getCardFilters(filtered)
+          console.log(filtered)
+        })
+      })
 
 
 
