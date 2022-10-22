@@ -167,3 +167,43 @@ filtered.filter(card => {
     }
   })
 })
+
+
+
+
+
+Utilisation des Tags avec un switch
+
+  // tags.map(i => {
+  //   switch (i.type) {
+  //     case "ingredient":
+
+
+  //       break;
+
+  //     case "utensil":
+  //       if (utensilFilterDeux.indexOf(i.name.toLowerCase()) < 0) utensilFilterDeux.push(i.name.toLowerCase())
+  //       break;
+
+  //     case "appliance":
+  //       deviceFilterDeux.push(i.name.toLowerCase())
+
+  //       break;
+
+  //   }
+  // })
+
+
+
+
+
+    // console.log(...deviceFilter)
+  // console.log(cards)
+  // const applianceFiller = cards.map(e => {
+  //   return e.appliance
+  // })
+
+  // console.log(...applianceFiller)
+
+  // // const cardFilter = cards.filter(c => deviceFilter.includes(c.appliance))
+  // // console.log(cardFilter)

@@ -20,7 +20,7 @@ const CardRenderer = {
 			<div class="timer"><p>${card.time} min</p></div>
 		</div>`,
 
-  description: (card) => `<div class="content-description"><p class="description">${card.description}</p></div>`,
+  description: (card) => `<div class="content-description" style:><p class="description">${card.description}</p></div>`,
 
   card: (card) => {
     card.element = document.createElement("article")
@@ -53,8 +53,27 @@ function renderError(card) {
 }
 renderError()
 
+let tags = [{}]
 
-const filterCards = (value, data, tags) => {
+
+
+const allFilter = [{ ingredients: [], ustentils: [], appliance: [] }]
+
+const ingredientFilter = allFilter[0].ingredients
+const utensilFilter = allFilter[0].ustentils
+const deviceFilter = allFilter[0].appliance
+
+
+
+const allFilterDeux = [{ ingredients: [], ustentils: [], appliance: [] }]
+
+const ingredientFilterDeux = allFilterDeux[0].ingredients
+const utensilFilterDeux = allFilterDeux[0].ustentils
+const deviceFilterDeux = allFilterDeux[0].appliance
+
+
+
+const filterCards = (value, data) => {
 
 
   const searchBar = document.getElementById("searchbar")
@@ -88,14 +107,14 @@ const filterCards = (value, data, tags) => {
       e.ustensils.find((el) => el.toLowerCase().includes(value.toLowerCase()))
   )
 
-
+  //tags = [{}] et ajouter en params
   if (filtered.length > 0) {
     filtered.map(card => card.element.style.display = "block")
   } else {
     noResult.style.display = "block"
   }
 
-  tags = [{}]
+
   filtered.map(i => {
     i.ustensils.map(u => {
       if (tags.indexOf(u) < 0) tags.push({ type: "utensil", name: `${u}` })
@@ -106,7 +125,7 @@ const filterCards = (value, data, tags) => {
     if (tags.indexOf(i.appliance) < 0) tags.push({ type: "appliance", name: `${i.appliance}` })
   })
 
-  console.log(tags)
+
 
   // console.log(tags)
 
@@ -127,8 +146,8 @@ const filterCards = (value, data, tags) => {
           break;
 
         case "appliance":
-          return card.appliance.toLowerCase() === t.name.toLowerCase()
-          break;
+          const testAppliance = card.appliance.toLowerCase() === t.name.toLowerCase()
+          return testAppliance
       }
     }).length > 0) return card
   })
@@ -142,6 +161,11 @@ const filterCards = (value, data, tags) => {
 
 /////////GET filtres 
 
+//Cration array
+
+let tagsDeux = [{}]
+
+let randomArray = ["bonjours", "aurevoir", "help"]
 
 const getCardFilters = (cards) => {
 
@@ -165,12 +189,15 @@ const getCardFilters = (cards) => {
 
   //Value fitre
 
-  //Cration array
-  const allFilter = [{ ingredients: [], ustentils: [], appliance: [] }]
 
-  const ingredientFilter = allFilter[0].ingredients
-  const utensilFilter = allFilter[0].ustentils
-  const deviceFilter = allFilter[0].appliance
+  ////Déclaré en général
+  // const allFilter = [{ ingredients: [], ustentils: [], appliance: [] }]
+
+  // const ingredientFilter = allFilter[0].ingredients
+  // const utensilFilter = allFilter[0].ustentils
+  // const deviceFilter = allFilter[0].appliance
+
+
 
   cards.map(i => {
     i.ustensils.map(u => {
@@ -183,11 +210,27 @@ const getCardFilters = (cards) => {
   })
 
 
+
+
+
+  // tags.map(i => {
+  //   if (i.type === "ingredient") {
+  //     if (ingredientFilterDeux.indexOf(i.name.toLowerCase()) < 0) ingredientFilterDeux.push(i.name.toLowerCase())
+  //   } else if (i.type === "utensil") {
+  //     if (utensilFilterDeux.indexOf(i.name.toLowerCase()) < 0) utensilFilterDeux.push(i.name.toLowerCase())
+
+  //   } else if (i.type === "appliance") {
+  //     if (deviceFilterDeux.indexOf(i.name.toLowerCase()) < 0) deviceFilterDeux.push(i.name.toLowerCase())
+  //   }
+  // })
+
+
+
+
   //filtrer accent
   ingredientFilter.sort()
   utensilFilter.sort()
   deviceFilter.sort()
-
 
 
 
@@ -197,15 +240,36 @@ const getCardFilters = (cards) => {
     const newIngr = document.createElement("p")
     newIngr.classList.add("filter-grid")
     newIngr.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-    ingredientFilterDisplay.appendChild(newIngr)
+
+    if (!ingredientFilterDisplay.innerText.includes(e)) {
+      if (ingredientFilterDisplay.style.display != "none") {
+        console.log("le tag est caché")
+      } else {
+        ingredientFilterDisplay.appendChild(newIngr)
+
+      }
+    } else {
+      // console.log("ingrédient existe déjà")
+    }
   })
+
 
   //add device
   deviceFilter.forEach(e => {
     const newDevice = document.createElement("p")
     newDevice.classList.add("filter-grid")
     newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-    deviceFilterDisplay.appendChild(newDevice)
+    if (!deviceFilterDisplay.innerText.includes(e)) {
+      if (deviceFilterDisplay.style.display != "none") {
+        // console.log("le tag est caché")
+      } else {
+        deviceFilterDisplay.appendChild(newDevice)
+
+      }
+    } else {
+      // console.log("appareil existe déjà")
+    }
+
   })
 
   //add utensil
@@ -213,18 +277,20 @@ const getCardFilters = (cards) => {
     const newUtensil = document.createElement("p")
     newUtensil.classList.add("filter-grid")
     newUtensil.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-    utensilFilterDisplay.appendChild(newUtensil)
+
+    if (!utensilFilterDisplay.innerText.includes(e)) {
+      if (utensilFilterDisplay.style.display != "none") {
+        console.log("le tag est caché")
+      } else {
+        utensilFilterDisplay.appendChild(newUtensil)
+
+      }
+    } else {
+      // console.log("usensile existe déjà")
+    }
   })
 
-
-
 }
-
-
-
-
-
-
 
 window.onload = () => {
 
@@ -333,17 +399,14 @@ window.onload = () => {
       const getFilters = [...document.querySelectorAll(".filter-value")]
       const choiceTest = document.querySelector(".selected")
 
-      getFilters.forEach(f => {
-        f.addEventListener("click", e => {
-          console.log(f.innerText)
-          let filtered = filterCards(f.innerText, data)
+      // getFilters.forEach(f => {
+      //   f.addEventListener("click", e => {
+      //     console.log(f.innerText)
+      //     let filtered = filterCards(f.innerText, data)
+      //     getCardFilters(filtered)
 
-          getCardFilters(filtered)
-          console.log(filtered)
-        })
-      })
-
-
+      //   })
+      // })
 
 
       getFilters.forEach(f => {
@@ -354,12 +417,31 @@ window.onload = () => {
           // div.setAttribute("style", "background-color:blue")
           div.innerHTML = f.innerText + `<img src="assets/svg/close.svg" class="close-img close-filter" />`
           choiceTest.appendChild(div)
+          console.log(choiceTest.lastChild.innerText)
+
+          const removeTag = [...document.querySelectorAll(".filter-grid")]
+
+          removeTag.map(e => {
+            if (e.innerText === choiceTest.lastChild.innerText) {
+              e.style.display = "none"
+            }
+          })
 
           const closeFilter = [...document.querySelectorAll(".close-filter")]
+
+          let filtered = filterCards(f.innerText, data)
+          console.log(filtered)
+          getCardFilters(filtered)
 
           closeFilter.forEach(e => {
             e.addEventListener("click", e => {
               choiceTest.removeChild(div)
+              const target = e.target.parentElement
+              removeTag.map(e => {
+                if (e.innerText === target.innerText) {
+                  e.style.display = "block"
+                }
+              })
 
             })
           })
@@ -374,4 +456,3 @@ window.onload = () => {
 }
 
 
-/* <button class="close-filter"></button> */ 
