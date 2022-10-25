@@ -41,15 +41,6 @@ const CardRenderer = {
   }
 }
 
-const TagRenderer = {
-  tag: (f, color) => {
-    const tag = document.createElement("div")
-    tag.classList.add("selected-list", color)
-    tag.setAttribute("id", f)
-    tag.innerHTML = `${f}<img src="assets/svg/close.svg" class="close-img close-filter" />`
-    return tag
-  },
-}
 
 function renderError(card) {
   const recipeCards = document.querySelector(".recipe-list")
@@ -62,6 +53,7 @@ function renderError(card) {
 }
 renderError()
 
+let tags = [{}]
 
 
 
@@ -83,8 +75,11 @@ const deviceFilterDeux = allFilterDeux[0].appliance
 
 const filterCards = (value, data) => {
 
+
   const searchBar = document.getElementById("searchbar")
   const submit = document.querySelector(".submitSearch")
+
+
 
   const allRecipes = data.recipes
   // recipeCards.innerHTML = ""
@@ -95,19 +90,11 @@ const filterCards = (value, data) => {
   const noResult = document.querySelector(".recipe-none")
   collection.forEach(elem => elem.style.display = "none")
 
+
+
+
   // const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase())) 
   // const filtered = allRecipes.filter(e => e.name.toLowerCase().includes(value.toLowerCase()) || e.appliance.toLowerCase().includes(value.toLowerCase()))
-
-
-  const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
-  const tags = tagsElements.map(t => { return { name: t.textContent, color: t.getAttribute('color') } })
-
-  let test = tagsElements.map(e => {
-    return e.innerText
-  })
-
-  console.log(test.toString())
-
 
 
   //.find() ou .some cause un conflit avec e.name
@@ -116,11 +103,9 @@ const filterCards = (value, data) => {
       e.name.toLowerCase().includes(value.toLowerCase()) ||
       e.appliance.toLowerCase().includes(value.toLowerCase())
       ||
-      e.ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
-      e.ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()))
+      e.ingredients.find((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
+      e.ustensils.find((el) => el.toLowerCase().includes(value.toLowerCase()))
   )
-
-  console.log(value)
 
   //tags = [{}] et ajouter en params
   if (filtered.length > 0) {
@@ -130,24 +115,37 @@ const filterCards = (value, data) => {
   }
 
 
+  filtered.map(i => {
+    i.ustensils.map(u => {
+      if (tags.indexOf(u) < 0) tags.push({ type: "utensil", name: `${u}` })
+    })
+    i.ingredients.map(u => {
+      if (tags.indexOf(u.ingredient) < 0) tags.push({ type: "ingredient", name: `${u.ingredient}` })
+    })
+    if (tags.indexOf(i.appliance) < 0) tags.push({ type: "appliance", name: `${i.appliance}` })
+  })
+
+
+
+  // console.log(tags)
 
   if (tags.length < 1) return filtered
 
 
   /* Filtering the cards based on the tags. */
-  return filtered.filter(card => {
+  const filteredTags = filtered.filter(card => {
     // console.log(card)
     if (tags.filter(t => {
-      switch (t.color) {
-        case "blue":
+      switch (t.type) {
+        case "ingredient":
           return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase())
           break;
 
-        case "red":
+        case "utensil":
           return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase())
           break;
 
-        case "green":
+        case "appliance":
           const testAppliance = card.appliance.toLowerCase() === t.name.toLowerCase()
           return testAppliance
       }
@@ -155,6 +153,7 @@ const filterCards = (value, data) => {
   })
 
   // console.log(filteredTags)
+  return filteredTags
 }
 
 
@@ -162,9 +161,13 @@ const filterCards = (value, data) => {
 
 /////////GET filtres 
 
+//Cration array
 
+let tagsDeux = [{}]
 
-const getCardFilters = (cards, tag) => {
+let randomArray = ["bonjours", "aurevoir", "help"]
+
+const getCardFilters = (cards) => {
 
 
   //DOM ingrédients
@@ -184,6 +187,17 @@ const getCardFilters = (cards, tag) => {
   const green = document.querySelector(".green")
   const red = document.querySelector(".red")
 
+  //Value fitre
+
+
+  ////Déclaré en général
+  // const allFilter = [{ ingredients: [], ustentils: [], appliance: [] }]
+
+  // const ingredientFilter = allFilter[0].ingredients
+  // const utensilFilter = allFilter[0].ustentils
+  // const deviceFilter = allFilter[0].appliance
+
+
 
   cards.map(i => {
     i.ustensils.map(u => {
@@ -195,6 +209,24 @@ const getCardFilters = (cards, tag) => {
     if (deviceFilter.indexOf(i.appliance.toLowerCase()) < 0) deviceFilter.push(i.appliance.toLowerCase())
   })
 
+
+
+
+
+  // tags.map(i => {
+  //   if (i.type === "ingredient") {
+  //     if (ingredientFilterDeux.indexOf(i.name.toLowerCase()) < 0) ingredientFilterDeux.push(i.name.toLowerCase())
+  //   } else if (i.type === "utensil") {
+  //     if (utensilFilterDeux.indexOf(i.name.toLowerCase()) < 0) utensilFilterDeux.push(i.name.toLowerCase())
+
+  //   } else if (i.type === "appliance") {
+  //     if (deviceFilterDeux.indexOf(i.name.toLowerCase()) < 0) deviceFilterDeux.push(i.name.toLowerCase())
+  //   }
+  // })
+
+
+
+
   //filtrer accent
   ingredientFilter.sort()
   utensilFilter.sort()
@@ -202,26 +234,12 @@ const getCardFilters = (cards, tag) => {
 
 
 
-  const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
-  const tags = tagsElements.map(t => { return { name: t.textContent, color: t.getAttribute('color') } })
-
-  let test = tagsElements.map(e => {
-    return e.innerText
-  })
-
-  console.log(test.toString())
-  console.log(tagsElements)
-  console.log(tags)
-
-
-  console.log(deviceFilter)
 
   //add ingredients
   ingredientFilter.forEach(e => {
     const newIngr = document.createElement("p")
     newIngr.classList.add("filter-grid")
     newIngr.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-    newIngr.setAttribute("color", "blue")
 
     if (!ingredientFilterDisplay.innerText.includes(e)) {
       if (ingredientFilterDisplay.style.display != "none") {
@@ -241,7 +259,6 @@ const getCardFilters = (cards, tag) => {
     const newDevice = document.createElement("p")
     newDevice.classList.add("filter-grid")
     newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-    newDevice.setAttribute("color", "green")
     if (!deviceFilterDisplay.innerText.includes(e)) {
       if (deviceFilterDisplay.style.display != "none") {
         // console.log("le tag est caché")
@@ -260,7 +277,8 @@ const getCardFilters = (cards, tag) => {
     const newUtensil = document.createElement("p")
     newUtensil.classList.add("filter-grid")
     newUtensil.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-    newUtensil.setAttribute("color", "red")
+    console.log(utensilFilterDisplay)
+
     if (!utensilFilterDisplay.innerText.includes(e)) {
       if (utensilFilterDisplay.style.display != "none") {
         console.log("le tag est caché")
@@ -272,7 +290,6 @@ const getCardFilters = (cards, tag) => {
       // console.log("usensile existe déjà")
     }
   })
-
 
 }
 
@@ -338,10 +355,6 @@ window.onload = () => {
       const recipeCards = document.querySelector(".recipe-list")
       recipeGrid.map(card => recipeCards.appendChild(CardRenderer.card(card)))
 
-
-      let filtered = filterCards(searchBar.value, data)
-      getCardFilters(filtered)
-
       const grid = document.querySelectorAll("section")
       submit.addEventListener("click", () => {
         let filtered = filterCards(searchBar.value, data)
@@ -352,14 +365,14 @@ window.onload = () => {
       searchbar.addEventListener("input", () => {
         if (searchBar.value.length >= 3) {
           let filtered = filterCards(searchBar.value, data)
-          console.log(filtered)
           getCardFilters(filtered)
         }
         renderError()
 
       })
 
-
+      let filtered = filterCards(searchBar.value, data)
+      getCardFilters(filtered)
 
       //Redirections erreur
       const tarte = document.querySelector(".test-tarte")
@@ -383,33 +396,69 @@ window.onload = () => {
       })
 
 
-      const getFilters = [...document.querySelectorAll(".filter-grid")]
-      const activeTags = document.querySelector(".selecteds")
 
-      getFilters.map(f => {
-        // <div f><a></a></div>
-        const color = f.parentNode.classList[0]
-        f.querySelector(".filter-value").addEventListener("click", e => {
+      const getFilters = [...document.querySelectorAll(".filter-value")]
+      const tags = document.querySelector(".selected")
+
+      // getFilters.forEach(f => {
+      //   f.addEventListener("click", e => {
+      //     console.log(f.innerText)
+      //     let filtered = filterCards(f.innerText, data)
+      //     getCardFilters(filtered)
+
+      //   })
+      // })
+
+
+      getFilters.forEach(f => {
+        f.addEventListener("click", e => {
+          // tags.innerHTML = f.innerText
+          const div = document.createElement("div")
+          div.classList.add("selected-list", "blue")
+          div.setAttribute("id", f.innerText)
+          // div.setAttribute("style", "background-color:blue")
+          div.innerHTML = f.innerText + `<img src="assets/svg/close.svg" class="close-img close-filter" />`
+          tags.appendChild(div)
 
           let filtered = filterCards(f.innerText, data)
+          console.log(filtered)
+          getCardFilters(filtered)
 
 
-          const tag = TagRenderer.tag(f.innerText, color)
-          activeTags.appendChild(tag)
-          f.style.display = "none"
-          getCardFilters(filtered, tag)
 
+          const filterList = [...document.querySelectorAll(".filter-grid")]
+          const closeFilter = [...document.querySelectorAll(".close-filter")]
 
-          tag.querySelector(".close-filter").addEventListener("click", e => {
-            activeTags.removeChild(tag)
-            f.style.display = "block"
+          /* Removing the tag from the list of tags. */
+          filterList.map(e => {
+            if (e.innerText === tags.lastChild.innerText) {
+              e.style.display = "none"
+            }
           })
-          searchBar.value = f.innerText
+
+          /* Adding an event listener to each close button. When the close button is clicked, it removes
+          the div that contains the close button and the text. It also displays the tag that was
+          removed. */
+          closeFilter.forEach(e => {
+            e.addEventListener("click", e => {
+              tags.removeChild(div)
+              const target = e.target.parentElement
+              filterList.map(e => {
+                if (e.innerText === target.innerText) {
+                  e.style.display = "block"
+                }
+              })
+
+            })
+          })
+
 
         })
-
       })
+
 
     })
 
 }
+
+

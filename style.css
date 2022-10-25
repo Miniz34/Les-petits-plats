@@ -49,7 +49,8 @@ font-size: 18px;
 .recipe-header {
   display: flex;
   flex-direction: column;
-  background: #E7E7E7
+  background: #E7E7E7;
+
 }
 
 .recipe-main {
