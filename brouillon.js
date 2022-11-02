@@ -207,3 +207,28 @@ Utilisation des Tags avec un switch
 
   // // const cardFilter = cards.filter(c => deviceFilter.includes(c.appliance))
   // // console.log(cardFilter)
+
+
+
+  const updateCardFilters = (cards) => {
+  console.log(cards)
+  const arr_i = []
+  const arr_u = []
+  const arr_a = []
+  cards.map(i => {
+    i.ingredients.map(u => {
+      if (arr_i.indexOf(u.ingredient.toLowerCase()) < 0) arr_i.push(u.ingredient.toLowerCase())
+    })
+    i.ustensils.map(u => {
+      if (arr_u.indexOf(u.toLowerCase()) < 0) arr_u.push(u.toLowerCase())
+    })
+    if (arr_a.indexOf(i.appliance.toLowerCase()) < 0) arr_a.push(i.appliance.toLowerCase())
+  })
+
+  document.querySelectorAll(".filter-grid").forEach(elem => elem.style.display = "none")
+  arr_i.forEach(e => document.getElementById("i-" + e).style.display = "block")
+  arr_u.forEach(e => document.getElementById("u-cocotte minute").style.display = "block")
+  arr_a.forEach(e => document.getElementById("a-" + e).style.display = "block")
+
+}
+
