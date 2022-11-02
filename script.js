@@ -217,7 +217,20 @@ window.onload = () => {
 
   let filterOver = null
   const switchFilter = (filter) => {
-    filters.map(f => f.list.style.display = 'none')
+    filters.map(f => {
+      f.list.style.display = 'none'
+      console.log(filter)
+      const container = document.querySelector(".button" + filter.color)
+      console.log(container)
+      container.classList.toggle("open")
+      container.innerHTML = "Rechercher un" + " " + filter.key
+    }
+    )
+    /* Toggling the class `hello` on the element with the class `sort-button-ingredient`. */
+    // const container = document.querySelector(".sort-button-ingredient")
+    // container.classList.toggle("hello")
+
+
 
     if (filterOver === filter) {
       filterOver = null
@@ -232,13 +245,17 @@ window.onload = () => {
     const container = document.querySelector(".sort-by-" + f.key)
     f.button = document.createElement("button")
     f.button.textContent = f.name
-    f.button.classList.add("sort-button", f.color)
+    f.button.classList.add("sort-button", f.color, "button" + f.color)
     f.list = document.createElement("div")
     f.list.classList.add(f.color, "filters-" + f.key, "filter-container")
     f.list.style.display = "none"
     container.appendChild(f.button)
     container.appendChild(f.list)
-    f.button.onclick = () => { switchFilter(f) }
+    f.button.onclick = () => {
+      switchFilter(f)
+      // container.classList.toggle("hello")
+
+    }
   })
 
   API_DATABASE.getRecipes()
