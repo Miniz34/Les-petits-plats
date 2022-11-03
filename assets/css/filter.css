@@ -2,38 +2,43 @@
 .sort-options {
   display: flex;
   flex-direction: row;
+  /* width: 100%; */
   gap: 50px;
-  margin-top: 20px
+  margin-top: 20px;
+  position: relative;
 }
 
 .sort-button {
-  width: 120px;
+  width: 100%;
   height: 70px;
   border: none;
   border-radius: 5px;
   color: white;
+  
   /* position : relative; */
 }
 
 .sort-button-all {
   border-radius: 5px;
-  width: 15%;
-}
+  
+  }
+
+
 
 
 .filters-ingredient, .filters-device, .filters-utensil {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  /* position : relative; */
-  max-width : 800px;
-  width: 500px;
-  left : 0;
+ 
+
 }
 
 .filter-container {
   min-height: 50px;
   max-height : 300px;
+  /* max-width : 800px;
+  width: 500px; */
   overflow-y : auto;
 }
 
@@ -44,17 +49,13 @@
 }
 
 
-.open-blue {
-  width: 45%;
-  background-color: #3282F7;
-}
 
 
 .open {
-  width: 480px;
+  width: 50%
 }
 
-.open-green {
+/* .open-green {
   width: 45%;
   background-color: #68D9A4;
 }
@@ -64,7 +65,7 @@
 .open-red {
   width: 45%;
   background-color: #ED6454;
-}
+} */
 
 .blue {
   background-color: #3282F7;
@@ -100,3 +101,45 @@
   margin-left: 10px;
   cursor: pointer;
 }
+
+.sort-button::placeholder {
+  color: white;
+  padding-left: 0px
+ }
+
+input[type=filter] {
+    padding-left: 15px;
+  }
+
+
+.open > input::placeholder {
+  opacity: 0.5;
+}
+
+
+.filter-grid a {
+color: white;
+text-decoration: underline 0.15em rgba(255, 255, 255, 0);
+transition: text-decoration-color 300ms;
+
+}
+
+
+.filter-grid a:hover {
+  text-decoration-color: rgba(255, 255, 255, 1);
+  
+  }
+
+  .display-filters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 75px;
+
+  }
+
+  .up-arrow {
+    color: white;
+    height: 34px;
+    margin-right: 10px;
+  }

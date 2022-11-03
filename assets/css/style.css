@@ -82,8 +82,7 @@ font-size: 18px;
   display: flex;
   flex-direction: column;
   background: #E7E7E7;
-  padding-left: 10px;
-  padding-right: 10px;
+  height: 50%;
 
 }
 
@@ -110,6 +109,8 @@ font-size: 18px;
   display: flex;
   flex-direction: row;
   align-items: center;
+   padding-left: 10px;
+  
   
 }
 
@@ -122,6 +123,7 @@ line-height: 22px;
 display: flex;
 flex-direction: row;
 align-items: center;
+padding-right: 10px; 
 
 }
 
@@ -148,6 +150,9 @@ align-items: center;
   display: flex;
   flex-direction: column;
 justify-content: flex-start;
+white-space: wrap;
+overflow: hidden
+
   }
 
   .ingredients p {
@@ -176,4 +181,14 @@ justify-content: flex-start;
 .recipe-none {
   text-align: center;
   font-size: 24px;
+}
+
+.arrow-btn {
+  background-color: green;
+  height: 40px;
+}
+
+
+.arrow {
+  color: black
 }

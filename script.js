@@ -197,33 +197,42 @@ window.onload = () => {
       key: 'ingredient',
       color: "blue",
       button: null,
-      list: null
+      list: null,
+      arrow: null
     },
     {
       name: "Appareils",
       key: 'device',
       color: "green",
       button: null,
-      list: null
+      list: null,
+      arrow: null
     },
     {
       name: "Ustensiles",
       key: 'utensil',
       color: "red",
       button: null,
-      list: null
+      list: null,
+      arrow: null
     }
   ]
 
   let filterOver = null
+
   const switchFilter = (filter) => {
+
+
     filters.map(f => {
       f.list.style.display = 'none'
       console.log(filter)
       const container = document.querySelector(".button" + filter.color)
-      console.log(container)
-      container.classList.toggle("open")
-      container.innerHTML = "Rechercher un" + " " + filter.key
+      container.parentElement.classList.toggle("open")
+
+      //à retourner lors de la fermeture
+      container.lastElementChild.style.transform = "rotate(180deg)"
+
+      // container.innerHTML = "Rechercher un" + " " + filter.key
     }
     )
     /* Toggling the class `hello` on the element with the class `sort-button-ingredient`. */
@@ -241,21 +250,36 @@ window.onload = () => {
     filterOver = filter
   }
 
+
   filters.map(f => {
     const container = document.querySelector(".sort-by-" + f.key)
-    f.button = document.createElement("button")
-    f.button.textContent = f.name
-    f.button.classList.add("sort-button", f.color, "button" + f.color)
+    f.button = document.createElement("input")
+    f.button.setAttribute("placeholder", f.key)
+    f.button.setAttribute("type", "filter")
+
+    f.button = document.createElement("div")
+    f.button.innerHTML = `<input placeholder="${f.key}" type="filter" class="sort-button ${f.color} button${f.color}">
+    <div><img src="assets/svg/up-arrow.svg" class="up-arrow" /></div>`
+
+    // f.button.setAttribute("placeholder", f.key)
+    // f.button.setAttribute("type", "filter")
+
+
+    // f.button.style = "color: white"
+    // f.button.textContent = newArrow
+    // allFilter.appendChild(newArrow)
+    // console.log(f)
+    // allFilter.map(e => {
+    //   // console.log(e)
+    //   e.appendChild(newArrow)
+    // })
+    f.button.classList.add("display-filters", "sort-button", f.color, "button" + f.color)
     f.list = document.createElement("div")
     f.list.classList.add(f.color, "filters-" + f.key, "filter-container")
     f.list.style.display = "none"
     container.appendChild(f.button)
     container.appendChild(f.list)
-    f.button.onclick = () => {
-      switchFilter(f)
-      // container.classList.toggle("hello")
-
-    }
+    f.button.onclick = () => { switchFilter(f) }
   })
 
   API_DATABASE.getRecipes()
@@ -272,6 +296,39 @@ window.onload = () => {
 
       const getFilters = [...document.querySelectorAll(".filter-grid")]
       const activeTags = document.querySelector(".selecteds")
+      const getInputFilters = [...document.querySelectorAll(".sort-button")]
+
+
+      // NOUVEAU CODE ///
+      // NOUVEAU CODE ///
+      // NOUVEAU CODE ///
+
+      getInputFilters.map(e => {
+        e.addEventListener("input", () => {
+          const filtered = filterCards(searchBar.value, data.recipes)
+          // // const searchFilter = getFilters.includes(e.value)
+          // displayCards(filtered)
+          // updateCardFilters(searchFilter)
+          // console.log(filtered)
+          getFilters.map(tags => {
+            if (e.value) {
+              if (tags.id.includes(e.value)) {
+              } else {
+                tags.style.display = "none"
+              }
+            } else {
+              updateCardFilters(filtered)
+              // displayCards(filtered)
+
+            }
+          })
+        })
+      })
+
+
+      // FIN NOUVEAU CODE ///
+      // FIN NOUVEAU CODE ///
+      // FIN NOUVEAU CODE ///
 
       getFilters.map(f => {
         const color = f.parentNode.classList[0]
@@ -296,9 +353,17 @@ window.onload = () => {
           updateCardFilters(filtered, activeTags.innerText)
           displayCards(filtered)
 
-          // updateCardFilters(reFiltered, activeTags.innerText)
-          // displayCards(reFiltered)
-          // f.style.display = "none"
+
+          ///Fermer automatiquer les filtres (je sais plus pourquoi je faisais ça) 
+          // const container = [...document.querySelectorAll(".sort-button-all")]
+          // console.log(container)
+          // container.forEach(e => {
+          //   e.classList.remove("open")
+          //   console.log(e)
+          //   switchFilter(e)
+
+          // })
+
 
 
           tag.querySelector(".close-filter").addEventListener("click", e => {
@@ -306,6 +371,7 @@ window.onload = () => {
             const filtered = filterCards(searchBar.value, data.recipes)
             updateCardFilters(filtered, activeTags.innerText)
             displayCards(filtered)
+
           })
           // searchBar.value = f.innerText
 
