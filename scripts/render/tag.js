@@ -1,3 +1,4 @@
+/* A function that creates a div element and returns it for selected tags */
 
 export const TagRenderer = {
   tag: (f, color) => {

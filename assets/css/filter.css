@@ -112,7 +112,7 @@ input[type=filter] {
   }
 
 
-.open > input::placeholder {
+.open > .display-filters > input::placeholder {
   opacity: 0.5;
 }
 

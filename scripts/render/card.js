@@ -34,3 +34,20 @@ export const CardRenderer = {
     return card.element
   }
 }
+
+
+/**
+ * It takes an array of objects, and displays the objects that match the search criteria.
+ * @param recipeList - an array of objects that contain the recipe cards
+ */
+export const displayCards = (recipeList) => {
+  const noResult = document.querySelector(".recipe-none")
+  const collection = document.querySelectorAll(".recipe-card")
+  collection.forEach(elem => elem.style.display = "none")
+  if (recipeList.length > 0) {
+    recipeList.forEach(card => card.element.style.display = "block")
+    noResult.style.display = "none"
+  } else {
+    noResult.style.display = "block"
+  }
+}

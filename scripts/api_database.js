@@ -3,6 +3,7 @@ const SERVER = {
   request_recipes: '/assets/recipes.json'
 }
 
+/* Call API */
 export const API_DATABASE = {
   getRecipes: () => {
 
