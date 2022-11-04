@@ -147,5 +147,5 @@ export const updateCardFilters = (cards, tags) => {
       case 'blue': document.getElementById("i-" + t.textContent).style.display = "none"; break
     }
   })
-
+  console.log("e")
 }
