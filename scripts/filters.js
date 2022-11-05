@@ -9,17 +9,22 @@ export const generateCardFilters = (cards) => {
   const utensilFilter = []
   const deviceFilter = []
 
+
   /* Iterating over the cards array and pushing the values of the properties of the objects in the array
   to the arrays ingredientFilter, utensilFilter and deviceFilter. */
-  cards.map(i => {
-    i.ustensils.map(u => {
-      if (utensilFilter.indexOf(u.toLowerCase()) < 0) utensilFilter.push(u.toLowerCase())
-    })
-    i.ingredients.map(u => {
-      if (ingredientFilter.indexOf(u.ingredient.toLowerCase()) < 0) ingredientFilter.push(u.ingredient.toLowerCase())
-    })
-    if (deviceFilter.indexOf(i.appliance.toLowerCase()) < 0) deviceFilter.push(i.appliance.toLowerCase())
-  })
+  for (let i = 0; i < cards.length; i++) {
+    // console.log(cards[i].ustensils)
+    for (let j = 0; j < cards[i].ustensils.length; j++) {
+      // console.log(cards[i].ustensils[j])
+      if (utensilFilter.indexOf(cards[i].ustensils[j].toLowerCase()) < 0)
+        utensilFilter.push(cards[i].ustensils[j].toLowerCase())
+    }
+    for (let k = 0; k < cards[i].ingredients.length; k++) {
+      if (ingredientFilter.indexOf(cards[i].ingredients[k].ingredient.toLowerCase()) < 0) ingredientFilter.push(cards[i].ingredients[k].ingredient.toLowerCase())
+    }
+    if (deviceFilter.indexOf(cards[i].appliance.toLowerCase()) < 0) deviceFilter.push(cards[i].appliance.toLowerCase())
+  }
+
 
   //filtrer accent
   ingredientFilter.sort()
@@ -36,37 +41,40 @@ export const generateCardFilters = (cards) => {
   const utensilFilterDisplay = document.querySelector(".filters-utensil")
 
   /* Creating a new paragraph element for "Ingredient" and appending it to the DOM. */
-  ingredientFilter.map(e => {
+
+
+  for (let i = 0; i < ingredientFilter.length; i++) {
     const newIngr = document.createElement("p")
     newIngr.classList.add("filter-grid")
-    newIngr.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
+    newIngr.innerHTML = `<a href="javascript:void(0)" class="filter-value">${ingredientFilter[i]}</a>`
     newIngr.setAttribute("color", "blue")
-    newIngr.id = "i-" + e
+    newIngr.id = "i-" + ingredientFilter[i]
     ingredientFilterDisplay.appendChild(newIngr)
-  })
+  }
 
-  /* Creating a new paragraph element for "Device" and appending it to the DOM. */
-  deviceFilter.map(e => {
+
+  for (let i = 0; i < deviceFilter.length; i++) {
     const newDevice = document.createElement("p")
     newDevice.classList.add("filter-grid")
-    newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-    newDevice.setAttribute("color", "green")
-    newDevice.id = "a-" + e
+    newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${deviceFilter[i]}</a>`
+    newDevice.setAttribute("color", "blue")
+    newDevice.id = "a-" + deviceFilter[i]
     deviceFilterDisplay.appendChild(newDevice)
-  })
+  }
 
-  /* Creating a new paragraph element for "Utensil" and appending it to the DOM. */
-  utensilFilter.map(e => {
+
+
+  for (let i = 0; i < utensilFilter.length; i++) {
     const newUtensil = document.createElement("p")
     newUtensil.classList.add("filter-grid")
-    newUtensil.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-    newUtensil.setAttribute("color", "red")
-    newUtensil.id = "u-" + e
+    newUtensil.innerHTML = `<a href="javascript:void(0)" class="filter-value">${utensilFilter[i]}</a>`
+    newUtensil.setAttribute("color", "blue")
+    newUtensil.id = "u-" + utensilFilter[i]
     utensilFilterDisplay.appendChild(newUtensil)
-  })
+  }
+
+
 }
-
-
 /**
  * It filters the list of cards based on the value of the search input and the tags.
  * @param value - the value of the search input
@@ -79,23 +87,46 @@ export const filterCards = (value, list) => {
   const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
   const tags = tagsElements.map(t => { return { name: t.textContent, color: t.getAttribute('color') } })
 
+  let filtered = list
   /* Filtering the list of cards based on the value of the search input. */
   //*TODO : input général à part (retourne cuillère à soupe quand on tape soupe)
-  const filtered =
-    value.length >= 3 ?
-      list.filter(
-        (e) =>
-          e.name.toLowerCase().includes(value.toLowerCase())
-        // ||
-        // e.appliance.toLowerCase().includes(value.toLowerCase())
-        // ||
-        // e.ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
-        // e.ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()))
-      ) : [...list]
+
+  if (value.length >= 3) {
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].name.toLowerCase().includes(value.toLowerCase()) ||
+        list[i].appliance.toLowerCase().includes(value.toLowerCase())
+      )
+        filtered.push(list[i])
+    }
+  }
+
+
+  console.log(filtered)
 
   if (tags.length < 1) return filtered
 
+
   /* Filtering the cards based on the tags. */
+
+  //TODO 
+  // for (let i = 0; i < filtered.length; i++) {
+  //   for (let j = 0; j < tags.length; j++) {
+
+  //     console.log(tags[j].color)
+  //     if (tags[j].color === "green") {
+
+  //       console.log("youhou")
+  //       console.log(filtered[i].appliance, tags[j].name)
+  //       console.log(filtered[i].appliance.toLowerCase() == tags[j].name.toLowerCase())
+  //       return filtered[i].appliance.toLowerCase() == tags[j].name.toLowerCase()
+
+  //     } else {
+  //       console.log("help")
+  //     }
+  //   }
+  // }
+
+
   return filtered.filter(card => {
     if (tags.filter(t => {
       switch (t.color) {
@@ -106,6 +137,7 @@ export const filterCards = (value, list) => {
       return false
     }).length === tags.length) return card
   })
+
 }
 
 
@@ -115,22 +147,25 @@ export const filterCards = (value, list) => {
  * @param cards - an array of objects, each object is a card
  */
 export const updateCardFilters = (cards, tags) => {
-  // console.log(cards)
+
   const arr_i = []
   const arr_u = []
   const arr_a = []
 
   /* Iterating over the cards array and pushing the values of the properties of the objects in the array
   to the arrays ingredientFilter, utensilFilter and deviceFilter. */
-  cards.map(i => {
-    i.ingredients.map(u => {
-      if (arr_i.indexOf(u.ingredient.toLowerCase()) < 0) arr_i.push(u.ingredient.toLowerCase())
-    })
-    i.ustensils.map(u => {
-      if (arr_u.indexOf(u.toLowerCase()) < 0) arr_u.push(u.toLowerCase())
-    })
-    if (arr_a.indexOf(i.appliance.toLowerCase()) < 0) arr_a.push(i.appliance.toLowerCase())
-  })
+
+  for (let i = 0; i < cards.length; i++) {
+    for (let j = 0; j < cards[i].ingredients.length; j++) {
+      if (arr_i.indexOf(cards[i].ingredients[j].ingredient.toLowerCase()) < 0) arr_i.push(cards[i].ingredients[j].ingredient.toLowerCase())
+    }
+    for (let k = 0; k < cards[i].ustensils.length; k++) {
+      if (arr_u.indexOf(cards[i].ustensils[k].toLowerCase()) < 0) arr_u.push(cards[i].ustensils[k].toLowerCase())
+    }
+    if (arr_a.indexOf(cards[i].appliance.toLowerCase()) < 0) arr_a.push(cards[i].appliance.toLowerCase())
+
+  }
+
 
   /* Hiding all the elements with the class "filter-grid" and then showing only the elements that are in
   the arrays arr_i, arr_u and arr_a. => meaning showing the element that are still available in the cards result */
@@ -140,6 +175,7 @@ export const updateCardFilters = (cards, tags) => {
   arr_a.forEach(e => document.getElementById("a-" + e).style.display = "block")
 
   /* Hiding the elements that are already selected. */
+  //TODO
   const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
   tagsElements.map(t => {
     switch (t.getAttribute('color')) {
@@ -149,3 +185,81 @@ export const updateCardFilters = (cards, tags) => {
     }
   })
 }
+
+
+
+
+
+
+
+ // cards.map(i => {
+    // i.ustensils.map(u => {
+    //   if (utensilFilter.indexOf(u.toLowerCase()) < 0) utensilFilter.push(u.toLowerCase())
+    // })
+    // i.ingredients.map(u => {
+    //   if (ingredientFilter.indexOf(u.ingredient.toLowerCase()) < 0) ingredientFilter.push(u.ingredient.toLowerCase())
+    // })
+    // if (deviceFilter.indexOf(i.appliance.toLowerCase()) < 0) deviceFilter.push(i.appliance.toLowerCase())
+  // })
+
+
+
+ // ingredientFilter.map(e => {
+  //   const newIngr = document.createElement("p")
+  //   newIngr.classList.add("filter-grid")
+  //   newIngr.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
+  //   newIngr.setAttribute("color", "blue")
+  //   newIngr.id = "i-" + e
+  //   ingredientFilterDisplay.appendChild(newIngr)
+  // })
+
+
+
+
+/* Creating a new paragraph element for "Device" and appending it to the DOM. */
+//   deviceFilter.map(e => {
+//     const newDevice = document.createElement("p")
+//     newDevice.classList.add("filter-grid")
+//     newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
+//     newDevice.setAttribute("color", "green")
+//     newDevice.id = "a-" + e
+//     deviceFilterDisplay.appendChild(newDevice)
+//   })
+
+//   /* Creating a new paragraph element for "Utensil" and appending it to the DOM. */
+//   utensilFilter.map(e => {
+//     const newUtensil = document.createElement("p")
+//     newUtensil.classList.add("filter-grid")
+//     newUtensil.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
+//     newUtensil.setAttribute("color", "red")
+//     newUtensil.id = "u-" + e
+//     utensilFilterDisplay.appendChild(newUtensil)
+//   })
+// }
+
+
+
+
+  // const filtered =
+  //   value.length >= 3 ?
+  //     list.filter(
+  //       (e) =>
+  //         e.name.toLowerCase().includes(value.toLowerCase())
+  //       // ||
+  //       // e.appliance.toLowerCase().includes(value.toLowerCase())
+  //       // ||
+  //       // e.ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
+  //       // e.ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()))
+  //     ) : [...list]
+
+
+  
+  // cards.map(i => {
+  //   i.ingredients.map(u => {
+  //     if (arr_i.indexOf(u.ingredient.toLowerCase()) < 0) arr_i.push(u.ingredient.toLowerCase())
+  //   })
+  //   i.ustensils.map(u => {
+  //     if (arr_u.indexOf(u.toLowerCase()) < 0) arr_u.push(u.toLowerCase())
+  //   })
+  //   if (arr_a.indexOf(i.appliance.toLowerCase()) < 0) arr_a.push(i.appliance.toLowerCase())
+  // })
