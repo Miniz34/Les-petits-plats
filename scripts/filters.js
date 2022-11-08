@@ -39,7 +39,7 @@ export const generateCardFilters = (cards) => {
   ingredientFilter.map(e => {
     const newIngr = document.createElement("p")
     newIngr.classList.add("filter-grid")
-    newIngr.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
+    newIngr.innerHTML = `${e}`
     newIngr.setAttribute("color", "blue")
     newIngr.id = "i-" + e
     ingredientFilterDisplay.appendChild(newIngr)
@@ -49,7 +49,7 @@ export const generateCardFilters = (cards) => {
   deviceFilter.map(e => {
     const newDevice = document.createElement("p")
     newDevice.classList.add("filter-grid")
-    newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
+    newDevice.innerHTML = `${e}`
     newDevice.setAttribute("color", "green")
     newDevice.id = "a-" + e
     deviceFilterDisplay.appendChild(newDevice)
@@ -59,7 +59,7 @@ export const generateCardFilters = (cards) => {
   utensilFilter.map(e => {
     const newUtensil = document.createElement("p")
     newUtensil.classList.add("filter-grid")
-    newUtensil.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
+    newUtensil.innerHTML = `${e}`
     newUtensil.setAttribute("color", "red")
     newUtensil.id = "u-" + e
     utensilFilterDisplay.appendChild(newUtensil)
