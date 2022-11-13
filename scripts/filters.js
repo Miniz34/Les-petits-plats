@@ -87,21 +87,25 @@ export const filterCards = (value, list) => {
   const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
   const tags = tagsElements.map(t => { return { name: t.textContent, color: t.getAttribute('color') } })
 
-  let filtered = list
+
   /* Filtering the list of cards based on the value of the search input. */
   //*TODO : input général à part (retourne cuillère à soupe quand on tape soupe)
 
+    let filtered = []
+    let searchFilter = list
   if (value.length >= 3) {
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].name.toLowerCase().includes(value.toLowerCase()) ||
-        list[i].appliance.toLowerCase().includes(value.toLowerCase())
-      )
-        filtered.push(list[i])
+    for (let i = 0; i < searchFilter.length; i++) {
+      if (searchFilter[i].name.toLowerCase().includes(value.toLowerCase()) ||
+        searchFilter[i].appliance.toLowerCase().includes(value.toLowerCase()) ||
+        searchFilter[i].ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
+    searchFilter[i].ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()) )
+      ) {
+        filtered.push(searchFilter[i])
+      }
     }
+  } else {
+    return list
   }
-
-
-  console.log(filtered)
 
   if (tags.length < 1) return filtered
 
@@ -130,17 +134,6 @@ export const filterCards = (value, list) => {
       return false
     }).length === tags.length) return card
   })
-
-  // return filtered.filter(card => {
-  //   if (tags.filter(t => {
-  //     switch (t.color) {
-  //       case "blue": return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase()).length > 0 // -> retourne un tableau contenant les élements qui répondent à la condition
-  //       case "red": return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase()) // -> presque pareil mais retourne seulement le premier élément remplissant la condition
-  //       case "green": return card.appliance.toLowerCase() === t.name.toLowerCase()
-  //     }
-  //     return false
-  //   }).length === tags.length) return card
-  // })
 
 }
 
@@ -190,7 +183,7 @@ export const updateCardFilters = (cards, tags) => {
       case 'blue': document.getElementById("i-" + t.textContent).style.display = "none"; break
     }
   })
- 
+
 }
 
 
