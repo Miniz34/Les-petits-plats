@@ -46,7 +46,7 @@ export const generateCardFilters = (cards) => {
   for (let i = 0; i < ingredientFilter.length; i++) {
     const newIngr = document.createElement("p")
     newIngr.classList.add("filter-grid")
-    newIngr.innerHTML = `<a href="javascript:void(0)" class="filter-value">${ingredientFilter[i]}</a>`
+    newIngr.innerHTML = `${ingredientFilter[i]}`
     newIngr.setAttribute("color", "blue")
     newIngr.id = "i-" + ingredientFilter[i]
     ingredientFilterDisplay.appendChild(newIngr)
@@ -56,7 +56,7 @@ export const generateCardFilters = (cards) => {
   for (let i = 0; i < deviceFilter.length; i++) {
     const newDevice = document.createElement("p")
     newDevice.classList.add("filter-grid")
-    newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${deviceFilter[i]}</a>`
+    newDevice.innerHTML = `${deviceFilter[i]}`
     newDevice.setAttribute("color", "blue")
     newDevice.id = "a-" + deviceFilter[i]
     deviceFilterDisplay.appendChild(newDevice)
@@ -67,7 +67,7 @@ export const generateCardFilters = (cards) => {
   for (let i = 0; i < utensilFilter.length; i++) {
     const newUtensil = document.createElement("p")
     newUtensil.classList.add("filter-grid")
-    newUtensil.innerHTML = `<a href="javascript:void(0)" class="filter-value">${utensilFilter[i]}</a>`
+    newUtensil.innerHTML = `${utensilFilter[i]}`
     newUtensil.setAttribute("color", "blue")
     newUtensil.id = "u-" + utensilFilter[i]
     utensilFilterDisplay.appendChild(newUtensil)
@@ -176,14 +176,17 @@ export const updateCardFilters = (cards, tags) => {
 
   /* Hiding the elements that are already selected. */
   //TODO
+
   const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
   tagsElements.map(t => {
+    console.log(t)
     switch (t.getAttribute('color')) {
       case 'red': document.getElementById("u-" + t.textContent).style.display = "none"; break
       case 'green': document.getElementById("a-" + t.textContent).style.display = "none"; break
       case 'blue': document.getElementById("i-" + t.textContent).style.display = "none"; break
     }
   })
+ 
 }
 
 
