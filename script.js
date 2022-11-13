@@ -70,6 +70,7 @@ window.onload = () => {
    * @param filter - {
    * @returns the value of the last expression.
    */
+
   const switchFilter = (filter) => {
 
     filters.map(f => {
@@ -91,6 +92,8 @@ window.onload = () => {
   }
 
 
+
+
   /* Creating a button for each filter and appending it to the DOM. */
   filters.map(f => {
     const container = document.querySelector(".sort-by-" + f.key)
@@ -107,30 +110,10 @@ window.onload = () => {
     f.input = f.button.querySelector("input")
     // f.input.onclick = () => { switchFilter(f) }
     f.input.onclick = () => { switchFilter(f) }
-
-
-
-
-    console.log(container.getAttribute("class"))
-
-
-
     container.appendChild(f.button)
     container.appendChild(f.list)
-
-    // if (container.getAttribute("class").includes("sort-button-all-active"))
-
-
-    // if (f.list.style.display = "flex") {
-    //   f.input.onclick = () => {
-    //     console.log("youhou")
-    //     f.list.style.display = "none"
-
-    //   }
-    // } else {
-    //   console.log("fermé")
-    // }
   })
+
 
   API_DATABASE.getRecipes()
     .then(data => {
@@ -149,6 +132,7 @@ window.onload = () => {
       const recipeGrid = data.recipes
       const recipeCards = document.querySelector(".recipe-list")
 
+
       /* Taking the value of the search bar, filtering the data, updating the card filters, and displaying
       the cards. */
       recipeGrid.map(card => recipeCards.appendChild(CardRenderer.card(card)))
@@ -157,7 +141,10 @@ window.onload = () => {
       const filtered = filterCards('', data.recipes)
       generateCardFilters(data.recipes)
 
+
+      const getFilters = [...document.querySelectorAll(".filter-grid")]
       const activeTags = document.querySelector(".selecteds")
+      const getInputFilters = [...document.querySelectorAll(".sort-button")]
       const colors = ['blue', 'green', 'red']
       colors.map(c => {
         const input = document.querySelector("input.sort-button." + c)
@@ -215,14 +202,104 @@ window.onload = () => {
 
 
 
-// container.forEach(e => {
-//   console.log(e.getAttribute("style"))
-//   if (e.getAttribute("style") == "display: flex;") {
-//     const input = e.parentElement.firstChild.firstChild
-//     console.log("gagné")
-//     console.log(e)
-//     input.onclick = () => {
-//       console.log("cliquez sur " + e.textContent)
-//     }
+
+
+
+
+
+
+
+
+
+// const switchFilter = (filter) => {
+//   filters.map(f => {
+
+//     f.list.style.display = 'none'
+//     const container = document.querySelector(".button" + filter.color)
+//     container.parentElement.classList.toggle("open")
+
+//     //TODO : à retourner lors de la fermeture
+//     container.lastElementChild.style.transform = "rotate(180deg)"
 //   }
+//   )
+//   if (filterOver === filter) {
+//     filterOver = null
+//     filter.button.firstChild.setAttribute("placeholder", `${filter.key}`)
+//     return
+//   }
+
+//   filter.list.style.display = 'flex'
+//   filter.button.firstChild.setAttribute("placeholder", `Rechercher un ${filter.key}`)
+//   filterOver = filter
+// }
+
+
+
+
+// filters.map(f => {
+//   const container = document.querySelector(".sort-by-" + f.key)
+//   f.button = document.createElement("input")
+//   f.button.setAttribute("placeholder", f.key)
+//   f.button.setAttribute("type", "filter")
+
+//   f.button = document.createElement("div")
+//   f.button.innerHTML = `<input placeholder="${f.key}" type="filter" class="sort-button ${f.color} button${f.color}">
+//   <div><img src="assets/svg/up-arrow.svg" class="up-arrow" /></div>`
+//   f.button.classList.add("display-filters", "sort-button", f.color, "button" + f.color)
+//   f.list = document.createElement("div")
+//   f.list.classList.add(f.color, "filters-" + f.key, "filter-container")
+//   f.list.style.display = "none"
+//   container.appendChild(f.button)
+//   container.appendChild(f.list)
+//   f.button.onclick = () => { switchFilter(f) }
 // })
+
+
+
+/* Filtering the data and generating the card filters using the filters input */
+//       getInputFilters.map(e => {
+//         e.addEventListener("input", () => {
+//           const filtered = filterCards(searchBar.value, data.recipes)
+//           getFilters.map(tags => {
+//             if (e.firstChild.value) {
+//               if (tags.id.includes(e.firstChild.value)) {
+//               } else {
+//                 tags.style.display = "none"
+//               }
+//             } else {
+//               updateCardFilters(filtered)
+//             }
+//           })
+//         })
+//       })
+
+//       /* Adding an event listener to the clickable filters */
+
+//       getFilters.map(f => {
+//         const color = f.parentNode.classList[0]
+//         f.querySelector(".filter-value").addEventListener("click", () => {
+//           console.log(f.parentNode)
+//           const tag = TagRenderer.tag(f.innerText, color)
+//           activeTags.appendChild(tag)
+//           updateCards()
+//           f.parentElement.previousElementSibling.firstChild.value = ""
+
+//           tag.querySelector(".close-filter").addEventListener("click", e => {
+//             activeTags.removeChild(tag)
+//             updateCards()
+
+//           })
+//         })
+//       })
+
+//       /* Adding an event listener to the submit button */
+//       submit.addEventListener("click", () => {
+//         updateCards()
+//       })
+
+//       /* Adding an event listener to the general input */
+//       searchBar.addEventListener("input", () => {
+//         updateCards()
+//       })
+//     })
+// }
