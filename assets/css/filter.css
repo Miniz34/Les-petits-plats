@@ -20,18 +20,17 @@
 
 .sort-button-all {
   border-radius: 5px;
-  
-  }
+  width : 20%;
+  position: relative;
+ }
 
-
-
+.sort-button-all-active {
+  width : 45%;
+}
 
 .filters-ingredient, .filters-device, .filters-utensil {
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
- 
-
 }
 
 .filter-container {
@@ -40,12 +39,16 @@
   /* max-width : 800px;
   width: 500px; */
   overflow-y : auto;
+  border-radius: 0 0 10px 10px;
+  padding-left: 10px;
+  gap : 0 5%;
+  position: absolute;
+  width: calc(100% - 10px)
 }
 
 .filter-grid {
-  width: 28%;
+  width: 30%;
   color: white
-
 }
 
 
@@ -59,9 +62,6 @@
   width: 45%;
   background-color: #68D9A4;
 }
-
-
-
 .open-red {
   width: 45%;
   background-color: #ED6454;
@@ -117,10 +117,12 @@ input[type=filter] {
 }
 
 
-.filter-grid a {
+.filter-grid  {
 color: white;
 text-decoration: underline 0.15em rgba(255, 255, 255, 0);
 transition: text-decoration-color 300ms;
+cursor: pointer;
+
 
 }
 
@@ -143,3 +145,23 @@ transition: text-decoration-color 300ms;
     height: 34px;
     margin-right: 10px;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

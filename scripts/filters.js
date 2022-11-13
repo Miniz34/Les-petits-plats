@@ -57,7 +57,7 @@ export const generateCardFilters = (cards) => {
     const newDevice = document.createElement("p")
     newDevice.classList.add("filter-grid")
     newDevice.innerHTML = `${deviceFilter[i]}`
-    newDevice.setAttribute("color", "blue")
+    newDevice.setAttribute("color", "green")
     newDevice.id = "a-" + deviceFilter[i]
     deviceFilterDisplay.appendChild(newDevice)
   }
@@ -68,7 +68,7 @@ export const generateCardFilters = (cards) => {
     const newUtensil = document.createElement("p")
     newUtensil.classList.add("filter-grid")
     newUtensil.innerHTML = `${utensilFilter[i]}`
-    newUtensil.setAttribute("color", "blue")
+    newUtensil.setAttribute("color", "red")
     newUtensil.id = "u-" + utensilFilter[i]
     utensilFilterDisplay.appendChild(newUtensil)
   }
@@ -106,37 +106,41 @@ export const filterCards = (value, list) => {
   if (tags.length < 1) return filtered
 
 
-  /* Filtering the cards based on the tags. */
-
-  //TODO 
-  // for (let i = 0; i < filtered.length; i++) {
-  //   for (let j = 0; j < tags.length; j++) {
-
-  //     console.log(tags[j].color)
-  //     if (tags[j].color === "green") {
-
-  //       console.log("youhou")
-  //       console.log(filtered[i].appliance, tags[j].name)
-  //       console.log(filtered[i].appliance.toLowerCase() == tags[j].name.toLowerCase())
-  //       return filtered[i].appliance.toLowerCase() == tags[j].name.toLowerCase()
-
-  //     } else {
-  //       console.log("help")
-  //     }
-  //   }
-  // }
-
-
   return filtered.filter(card => {
     if (tags.filter(t => {
       switch (t.color) {
-        case "blue": return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase()).length > 0 // -> retourne un tableau contenant les élements qui répondent à la condition
-        case "red": return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase()) // -> presque pareil mais retourne seulement le premier élément remplissant la condition
-        case "green": return card.appliance.toLowerCase() === t.name.toLowerCase()
+        case "blue":
+        for (let i = 0 ; i < card.ingredients.length ; i++) {
+                    if (card.ingredients[i].ingredient.toLowerCase() === t.name.toLowerCase())
+          return card.ingredients[i].ingredient.toLowerCase()
+        }
+        break 
+        // case "blue": return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase()).length > 0 // -> retourne un tableau contenant les élements qui répondent à la condition
+        case "red":
+        for (let j = 0 ; j < card.ustensils.length ; j++) {
+          if (card.ustensils[j].toLowerCase() === t.name.toLowerCase())
+          return card.ustensils[j].toLowerCase()
+        }
+        break
+        // case "red": return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase()) // -> presque pareil mais retourne seulement le premier élément remplissant la condition
+        case "green":
+        console.log(card.appliance.toLowerCase() === t.name.toLowerCase())
+        return card.appliance.toLowerCase() === t.name.toLowerCase()
       }
       return false
     }).length === tags.length) return card
   })
+
+  // return filtered.filter(card => {
+  //   if (tags.filter(t => {
+  //     switch (t.color) {
+  //       case "blue": return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase()).length > 0 // -> retourne un tableau contenant les élements qui répondent à la condition
+  //       case "red": return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase()) // -> presque pareil mais retourne seulement le premier élément remplissant la condition
+  //       case "green": return card.appliance.toLowerCase() === t.name.toLowerCase()
+  //     }
+  //     return false
+  //   }).length === tags.length) return card
+  // })
 
 }
 
