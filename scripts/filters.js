@@ -86,11 +86,11 @@ export const filterCards = (value, list) => {
       list.filter(
         (e) =>
           e.name.toLowerCase().includes(value.toLowerCase())
-        // ||
-        // e.appliance.toLowerCase().includes(value.toLowerCase())
-        // ||
-        // e.ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
-        // e.ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()))
+          ||
+          e.appliance.toLowerCase().includes(value.toLowerCase())
+          ||
+          e.ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
+          e.ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()))
       ) : [...list]
 
   if (tags.length < 1) return filtered
