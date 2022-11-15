@@ -75,6 +75,32 @@ export const generateCardFilters = (cards) => {
 
 
 }
+
+const filterCondition = (card, t) => {
+    switch (t.color) {
+      case "blue":
+        for (let ingredient of card.ingredients) {
+          if (ingredient.ingredient.toLowerCase() === t.name.toLowerCase())
+            return true
+        }
+        break
+      // case "blue": return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase()).length > 0 // -> retourne un tableau contenant les élements qui répondent à la condition
+
+      case "red":
+        for (let utensil of card.ustensils) {
+          if (utensil.toLowerCase() === t.name.toLowerCase())
+            return true
+        }
+        break
+      // case "red": return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase()) // -> presque pareil mais retourne seulement le premier élément remplissant la condition
+
+      case "green":
+        return card.appliance.toLowerCase() === t.name.toLowerCase()
+    }
+
+    return false
+}
+
 /**
  * It filters the list of cards based on the value of the search input and the tags.
  * @param value - the value of the search input
@@ -84,56 +110,44 @@ export const generateCardFilters = (cards) => {
 
 export const filterCards = (value, list) => {
 
-  const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
-  const tags = tagsElements.map(t => { return { name: t.textContent, color: t.getAttribute('color') } })
-
-
+  const valueTest = value.toLowerCase()
   /* Filtering the list of cards based on the value of the search input. */
   //*TODO : input général à part (retourne cuillère à soupe quand on tape soupe)
 
-    let filtered = []
-    let searchFilter = list
-  if (value.length >= 3) {
-    for (let i = 0; i < searchFilter.length; i++) {
-      if (searchFilter[i].name.toLowerCase().includes(value.toLowerCase()) ||
-        searchFilter[i].appliance.toLowerCase().includes(value.toLowerCase()) ||
-        searchFilter[i].ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
-    searchFilter[i].ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()) )
+  const tagsElements = document.querySelector(".selecteds").querySelectorAll(".selected-list")
+  const tags = []
+  for (let t of tagsElements)  {
+    tags.push( { name: t.textContent, color: t.getAttribute('color') } )
+  }
+
+  if (valueTest.length < 3 && tags.length<1) return list
+
+  let filtered = []
+  if (valueTest.length >= 3) {
+
+    for (let filter of list) {
+      if (filter.name.toLowerCase().includes(valueTest) ||
+        filter.appliance.toLowerCase().includes(valueTest) ||
+        filter.ingredients.some((el) => el.ingredient.toLowerCase().includes(valueTest)) ||
+        filter.ustensils.some((el) => el.toLowerCase().includes(valueTest) )
       ) {
-        filtered.push(searchFilter[i])
+        filtered.push(filter)
       }
     }
   } else {
-    return list
+    filtered = list.slice()
   }
 
   if (tags.length < 1) return filtered
 
+  const out = []
+  for (let card of filtered) {
+    let result = true;
+    for (let t of tags) if (!filterCondition(card, t)) result = false
+    if (result) out.push(card)
+  }
 
-  return filtered.filter(card => {
-    if (tags.filter(t => {
-      switch (t.color) {
-        case "blue":
-        for (let i = 0 ; i < card.ingredients.length ; i++) {
-                    if (card.ingredients[i].ingredient.toLowerCase() === t.name.toLowerCase())
-          return card.ingredients[i].ingredient.toLowerCase()
-        }
-        break 
-        // case "blue": return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase()).length > 0 // -> retourne un tableau contenant les élements qui répondent à la condition
-        case "red":
-        for (let j = 0 ; j < card.ustensils.length ; j++) {
-          if (card.ustensils[j].toLowerCase() === t.name.toLowerCase())
-          return card.ustensils[j].toLowerCase()
-        }
-        break
-        // case "red": return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase()) // -> presque pareil mais retourne seulement le premier élément remplissant la condition
-        case "green":
-        console.log(card.appliance.toLowerCase() === t.name.toLowerCase())
-        return card.appliance.toLowerCase() === t.name.toLowerCase()
-      }
-      return false
-    }).length === tags.length) return card
-  })
+  return out
 
 }
 
@@ -173,16 +187,14 @@ export const updateCardFilters = (cards, tags) => {
 
   /* Hiding the elements that are already selected. */
   //TODO
-
-  const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
-  tagsElements.map(t => {
-    console.log(t)
+  const tagsElements = document.querySelector(".selecteds").querySelectorAll(".selected-list")
+  for (let t of tagsElements) {
     switch (t.getAttribute('color')) {
       case 'red': document.getElementById("u-" + t.textContent).style.display = "none"; break
       case 'green': document.getElementById("a-" + t.textContent).style.display = "none"; break
       case 'blue': document.getElementById("i-" + t.textContent).style.display = "none"; break
     }
-  })
+  }
 
 }
 
