@@ -124,7 +124,7 @@ window.onload = () => {
        */
 
       const updateCards = () => {
-        const NBLoop = 10000
+        const NBLoop = 1000
         console.log("----- <test> ----")
         const t0 = Date.now()
         for (let x = 0; x < NBLoop; x++) {
@@ -136,6 +136,26 @@ window.onload = () => {
         console.log("update in " + (t1 - t0) / NBLoop + " ms")
         console.log("----- </test> ----")
       }
+
+
+
+      // const updateCards = () => {
+      //   const NBLoop = 10000
+      //   console.log("----- <test> ----")
+      //   const t0 = Date.now()
+      //   let n = 0
+      //   while (n < 100000) {
+      //     const filtered = filterCards(searchBar.value, data.recipes)
+      //     updateCardFilters(filtered)
+      //     displayCards(filtered)
+      //     n++
+      //   }
+
+      //   const t1 = Date.now()
+      //   // console.log("update in " + (t1 - t0) / NBLoop + " ms")
+      //   console.log("10000 boucles en " + (t1 - t0) + " ms")
+      //   console.log("----- </test> ----")
+      // }
 
       const recipeGrid = data.recipes
       const recipeCards = document.querySelector(".recipe-list")
