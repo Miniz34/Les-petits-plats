@@ -123,7 +123,7 @@ window.onload = () => {
        * the cards.
        */
       const updateCards = () => {
-        const NBLoop = 10000
+        const NBLoop = 5000
         console.log("----- <test> ----")
         const t0 = Date.now()
         for (let x = 0; x < NBLoop; x++) {
@@ -134,9 +134,11 @@ window.onload = () => {
         const t1 = Date.now()
         console.log("update in " + (t1 - t0) / NBLoop + " ms")
         console.log("----- </test> ----")
-        const durationLoop = 60
 
 
+        // const filtered = filterCards(searchBar.value, data.recipes)
+        // updateCardFilters(filtered)
+        // displayCards(filtered)
 
       }
 
