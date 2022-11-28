@@ -28,6 +28,10 @@
   width : 45%;
 }
 
+.sort-button-all-active img {
+  transform: rotate(180deg);
+}
+
 .filters-ingredient, .filters-device, .filters-utensil {
   flex-direction: row;
   flex-wrap: wrap;
@@ -62,9 +66,6 @@
   width: 45%;
   background-color: #68D9A4;
 }
-
-
-
 .open-red {
   width: 45%;
   background-color: #ED6454;
@@ -148,3 +149,5 @@ cursor: pointer;
     height: 34px;
     margin-right: 10px;
   }
+
+

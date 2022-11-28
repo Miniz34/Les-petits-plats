@@ -100,7 +100,7 @@ window.onload = () => {
     f.container = container
     f.button = document.createElement("div")
     f.button.innerHTML = `<input placeholder="${f.key}" type="filter" class="sort-button ${f.color} button${f.color}">
-    <div><img src="assets/svg/up-arrow.svg" class="up-arrow" /></div>`
+    <div><img src="assets/svg/up-arrow.svg" class="up-arrow ${f.key}" /></div>`
     f.button.classList.add("display-filters", "sort-button", f.color, "button" + f.color)
 
     f.list = document.createElement("div")
@@ -196,6 +196,20 @@ window.onload = () => {
       const container = [...document.querySelectorAll(".filter-container")]
       console.log(container)
 
+      const upArrow = [...document.querySelectorAll(".up-arrow")]
+      upArrow.forEach(e => {
+        e.onclick = (event) => {
+
+          const classArrow = event.target.getAttribute("class")
+          const filterArrow = classArrow.split(" ")[1]
+
+          const test = event.target.parentElement.parentElement.parentElement.lastChild
+          console.log(test)
+          test.style.display = "none"
+          test.parentElement.classList.remove("sort-button-all-active")
+          test.previousElementSibling.firstChild.setAttribute("placeholder", filterArrow)
+        }
+      })
 
     })
 }

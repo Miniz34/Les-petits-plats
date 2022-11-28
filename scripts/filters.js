@@ -76,6 +76,8 @@ export const generateCardFilters = (cards) => {
 
 export const filterCards = (value, list) => {
 
+  const valueTest = value.toLowerCase()
+
   const tagsElements = [...document.querySelector(".selecteds").querySelectorAll(".selected-list")]
   const tags = tagsElements.map(t => { return { name: t.textContent, color: t.getAttribute('color') } })
 
@@ -85,12 +87,11 @@ export const filterCards = (value, list) => {
     value.length >= 3 ?
       list.filter(
         (e) =>
-          e.name.toLowerCase().includes(value.toLowerCase())
-          ||
-          e.appliance.toLowerCase().includes(value.toLowerCase())
-          ||
-          e.ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
-          e.ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()))
+          e.name.toLowerCase().includes(valueTest) ||
+          e.ingredients.some((el) => el.ingredient.toLowerCase().includes(valueTest)) ||
+          e.description.toLowerCase().includes(valueTest)
+        // e.appliance.toLowerCase().includes(valueTest)||
+        // e.ustensils.some((el) => el.toLowerCase().includes(valueTest))
       ) : [...list]
 
   if (tags.length < 1) return filtered
