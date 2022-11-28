@@ -1,3 +1,4 @@
+const maxDescriptionChars = 180;
 
 // Card Renderer (object that contains a method for each element to display)
 export const CardRenderer = {
@@ -14,7 +15,13 @@ export const CardRenderer = {
 			<div class="timer"><p>${card.time} min</p></div>
 		</div>`,
 
-  description: (card) => `<div class="content-description" style:><p class="description">${card.description}</p></div>`,
+  description: (card) => {
+    let c = card.description
+    if (c.length > maxDescriptionChars) c = (c.split('').slice(0, maxDescriptionChars)).join('') + '…'
+    return `<div class="content-description" style:><p class="description">${c}</p></div>`
+  },
+
+  description2: (card) => `<div class="content-description" style:><p class="description">${(card.description.length > maxDescriptionChars) ? (card.description.split('').slice(0, maxDescriptionChars)).join('') + '…' : card.description}</p></div>`,
 
   card: (card) => {
     card.element = document.createElement("article")

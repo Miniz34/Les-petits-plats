@@ -110,6 +110,9 @@ const filterCondition = (card, t) => {
 
 export const filterCards = (value, list) => {
 
+  console.log(list)
+
+
   const valueTest = value.toLowerCase()
   /* Filtering the list of cards based on the value of the search input. */
   //*TODO : input général à part (retourne cuillère à soupe quand on tape soupe)
@@ -126,10 +129,12 @@ export const filterCards = (value, list) => {
   if (valueTest.length >= 3) {
 
     for (let filter of list) {
-      if (filter.name.toLowerCase().includes(valueTest) ||
-        filter.appliance.toLowerCase().includes(valueTest) ||
-        filter.ingredients.some((el) => el.ingredient.toLowerCase().includes(valueTest)) ||
-        filter.ustensils.some((el) => el.toLowerCase().includes(valueTest) )
+      if (filter.name.toLowerCase().includes(valueTest) ||       
+        filter.ingredients.some((el) => el.ingredient.toLowerCase().includes(valueTest)) ||        
+        filter.description.toLowerCase().includes(valueTest)
+         // || filter.appliance.toLowerCase().includes(valueTest) ||
+        // filter.ustensils.some((el) => el.toLowerCase().includes(valueTest) )
+
       ) {
         filtered.push(filter)
       }

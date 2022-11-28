@@ -1,6 +1,16 @@
 body {
-  max-width: 1800px;
+  max-width: 1440px;
+  width: 100%;
   margin: auto;
+  font-family: 'Lato', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 12px;
+}
+
+.wrapper {
+  width: 100%;
+  margin-left: 3%;
+  margin-right: 3%;
+
 }
 
 header {
@@ -19,8 +29,12 @@ header {
 
 .main-title {
   margin-top: 0px;
-  font-size: 60px;  
-  color: #ed6354a1
+  /* font-size: 60px;   */
+  color: #D04F4F;
+  font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 47px;
 }
 
 
@@ -31,10 +45,42 @@ main {
 
 #searchbar {
 width: 95%;
-height: 50px;
+height: 65px;
 font-size: 18px;
+border: none;
+background-color: #E7E7E7;
+border-radius: 5px;
 }
 
+#searchbar::placeholder {
+  padding-left: 25px;
+}
+
+
+#searchbar:hover {
+  border: 2px solid rgb(187, 1, 187);
+}
+
+@media screen and (max-width: 1065px) {
+  #searchbar {
+    width: 85%;
+  }
+
+}
+
+
+@media screen and (max-width: 800px) {
+
+.sort-options {
+  /* flex-direction: column; */
+  gap: 0
+}
+
+.sort-button-all {
+  width: 30%;
+}
+
+}
 
 .submitSearch {
   position: relative;
@@ -66,7 +112,8 @@ font-size: 18px;
 }
 
 .recipe-card {
-  border: 2px solid black;
+  border-radius: 10px;
+  overflow: hidden;
   width: 30%;
   height: 480px;
   min-width: 350px;
@@ -74,7 +121,7 @@ font-size: 18px;
 }
 
 .recipe-img {
-  background-color: grey;
+  background-color: #C7BEBE;
   height: 50%;
 }
 
@@ -91,7 +138,8 @@ font-size: 18px;
   flex-direction: row;
   background: #E7E7E7;
   justify-content: space-between;
-  align-items: flex-start
+  align-items: flex-start;
+  padding: 0 15px;
 }
 
 .content-title {
@@ -105,7 +153,6 @@ font-size: 18px;
   font-size: 18px;
   line-height: 21.6px;
   font-weight: 400;
-  font-family: 'Lato';
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -171,10 +218,10 @@ justify-content: flex-start;
   /* white-space: wrap;
   overflow: hidden visible; */
   height: 145px;
-    display: -webkit-box;
+    /* display: -webkit-box;
     -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;
-    overflow: hidden;
+    overflow: hidden; */
     margin-top: 0;
 }
 
@@ -192,3 +239,4 @@ justify-content: flex-start;
 .arrow {
   color: black
 }
+

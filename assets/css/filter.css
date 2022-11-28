@@ -28,6 +28,10 @@
   width : 45%;
 }
 
+.sort-button-all-active img {
+  transform: rotate(180deg);
+}
+
 .filters-ingredient, .filters-device, .filters-utensil {
   flex-direction: row;
   flex-wrap: wrap;
