@@ -18,36 +18,37 @@
 </head>
 
 <body>
-  <header>
-    <img src="/assets/svg/icone.png" class="main-icon" />
-    <h1 class="main-title">Les petits plats</h1>
-  </header>
-  <main>
-    <div class="search-container">
-      <div class="search">
-        <label for="searchbar"></label>
-        <input id="searchbar" type="text" name="search" placeholder="Rechercher une recette">
-        <button class="submitSearch"><img src="assets/svg/glass.svg" class="glass-img" /></button>
+  <div class="wrapper">
+    <header>
+      <img src="/assets/svg/icone.png" class="main-icon" />
+      <h1 class="main-title">Les petits plats</h1>
+    </header>
+    <main>
+      <div class="search-container">
+        <div class="search">
+          <label for="searchbar"></label>
+          <input id="searchbar" type="text" name="search" placeholder="Rechercher une recette">
+          <img src="assets/svg/glass.svg" class="glass-img submitSearch" />
+        </div>
+        <div class="selecteds"></div>
+        <div class="sort-options">
+
+          <div class="sort-by-ingredient sort-button-all sort-button-ingredient "></div>
+
+          <div class="sort-by-device sort-button-all sort-button-device"></div>
+          <div class="sort-by-utensil sort-button-all sort-button-utensil"></div>
+        </div>
       </div>
-      <div class="selecteds"></div>
-      <div class="sort-options">
-
-        <div class="sort-by-ingredient sort-button-all sort-button-ingredient "></div>
-
-        <div class="sort-by-device sort-button-all sort-button-device"></div>
-        <div class="sort-by-utensil sort-button-all sort-button-utensil"></div>
-      </div>
-    </div>
-    <section class="recipe-list">
-    </section>
+      <section class="recipe-list">
+      </section>
 
 
-  </main>
-  <footer></footer>
+    </main>
+    <footer></footer>
 
-  <script src="script.js" type="module"></script>
+    <script src="script.js" type="module"></script>
 
-
+  </div>
 </body>
 
 </html>

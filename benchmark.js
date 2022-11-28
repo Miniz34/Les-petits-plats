@@ -32,8 +32,6 @@ window.onload = () => {
   const searchBar = document.getElementById("searchbar")
   const submit = document.querySelector(".submitSearch")
 
-
-
   /* Creating an array of objects for the filters */
 
   const filters = [

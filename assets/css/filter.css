@@ -14,8 +14,11 @@
   border: none;
   border-radius: 5px;
   color: white;
+}
+
+.sort-button::placeholder::first-letter {
+  text-transform: uppercase;
   
-  /* position : relative; */
 }
 
 .sort-button-all {
@@ -26,10 +29,18 @@
 
 .sort-button-all-active {
   width : 45%;
+  z-index: 50;
 }
 
-.sort-button-all-active img {
+
+
+
+.up-arrow {
   transform: rotate(180deg);
+  transition : transform 0.5s ease-in-out;
+}
+.sort-button-all-active .up-arrow {
+  transform: rotate(0deg);
 }
 
 .filters-ingredient, .filters-device, .filters-utensil {
@@ -52,7 +63,8 @@
 
 .filter-grid {
   width: 30%;
-  color: white
+  color: white;
+  padding: 7px 0;
 }
 
 

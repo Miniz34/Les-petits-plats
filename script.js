@@ -6,6 +6,7 @@ import { filterCards } from "./scripts/filters.js"
 import { updateCardFilters } from "./scripts/filters.js"
 import { generateError } from "./scripts/render/error.js"
 
+const capitalizeFL = (t) => t.length > 0 ? t[0].toUpperCase() + t.slice(1).toLowerCase() : '';
 
 window.onload = () => {
   /* Creating an error message that will be displayed if the user does not enter a search term or no results are return */
@@ -75,9 +76,10 @@ window.onload = () => {
 
     filters.map(f => {
 
+
       f.container.classList.remove("sort-button-all-active")
       f.list.style.display = 'none'
-      f.input.setAttribute("placeholder", f.key)
+      f.input.setAttribute("placeholder", capitalizeFL(f.key))
 
       //   const container = document.querySelector(".button" + filter.color)
       //   container.parentElement.classList.toggle("open")
@@ -85,10 +87,12 @@ window.onload = () => {
       //   container.lastElementChild.style.transform = "rotate(180deg)"
     })
 
-    const f = filter;
-    f.container.classList.add("sort-button-all-active");
-    f.input.setAttribute("placeholder", `Rechercher un ${f.key}`)
-    f.list.style.display = 'flex'
+    if (filter) {
+      const f = filter;
+      f.container.classList.add("sort-button-all-active");
+      f.input.setAttribute("placeholder", `Rechercher un ${f.key}`)
+      f.list.style.display = 'flex'
+    }
   }
 
 
@@ -96,10 +100,9 @@ window.onload = () => {
 
   /* Creating a button for each filter and appending it to the DOM. */
   filters.map(f => {
-    const container = document.querySelector(".sort-by-" + f.key)
-    f.container = container
+    f.container = document.querySelector(".sort-by-" + f.key)
     f.button = document.createElement("div")
-    f.button.innerHTML = `<input placeholder="${f.key}" type="filter" class="sort-button ${f.color} button${f.color}">
+    f.button.innerHTML = `<input placeholder="${capitalizeFL(f.key)}" type="filter" class="sort-button ${f.color} button${f.color}">
     <div><img src="assets/svg/up-arrow.svg" class="up-arrow ${f.key}" /></div>`
     f.button.classList.add("display-filters", "sort-button", f.color, "button" + f.color)
 
@@ -110,8 +113,17 @@ window.onload = () => {
     f.input = f.button.querySelector("input")
     // f.input.onclick = () => { switchFilter(f) }
     f.input.onclick = () => { switchFilter(f) }
-    container.appendChild(f.button)
-    container.appendChild(f.list)
+    f.container.appendChild(f.button)
+    f.container.appendChild(f.list)
+
+    const upArrow = f.button.querySelector(".up-arrow")
+    upArrow.onclick = (event) => {
+      if (f.container.classList.contains("sort-button-all-active")) {
+        switchFilter(null)
+      } else {
+        switchFilter(f)
+      }
+    }
   })
 
 
@@ -193,23 +205,7 @@ window.onload = () => {
         updateCards()
       })
 
-      const container = [...document.querySelectorAll(".filter-container")]
-      console.log(container)
 
-      const upArrow = [...document.querySelectorAll(".up-arrow")]
-      upArrow.forEach(e => {
-        e.onclick = (event) => {
-
-          const classArrow = event.target.getAttribute("class")
-          const filterArrow = classArrow.split(" ")[1]
-
-          const test = event.target.parentElement.parentElement.parentElement.lastChild
-          console.log(test)
-          test.style.display = "none"
-          test.parentElement.classList.remove("sort-button-all-active")
-          test.previousElementSibling.firstChild.setAttribute("placeholder", filterArrow)
-        }
-      })
 
     })
 }
