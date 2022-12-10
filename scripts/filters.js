@@ -83,28 +83,28 @@ export const generateCardFilters = (cards) => {
  */
 
 const filterCondition = (card, t) => {
-    switch (t.color) {
-      case "blue":
-        for (let ingredient of card.ingredients) {
-          if (ingredient.ingredient.toLowerCase() === t.name.toLowerCase())
-            return true
-        }
-        break
-      // case "blue": return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase()).length > 0 // -> retourne un tableau contenant les élements qui répondent à la condition
+  switch (t.color) {
+    case "blue":
+      for (let ingredient of card.ingredients) {
+        if (ingredient.ingredient.toLowerCase() === t.name.toLowerCase())
+          return true
+      }
+      break
+    // case "blue": return card.ingredients.filter(i => i.ingredient.toLowerCase() === t.name.toLowerCase()).length > 0 // -> retourne un tableau contenant les élements qui répondent à la condition
 
-      case "red":
-        for (let utensil of card.ustensils) {
-          if (utensil.toLowerCase() === t.name.toLowerCase())
-            return true
-        }
-        break
-      // case "red": return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase()) // -> presque pareil mais retourne seulement le premier élément remplissant la condition
+    case "red":
+      for (let utensil of card.ustensils) {
+        if (utensil.toLowerCase() === t.name.toLowerCase())
+          return true
+      }
+      break
+    // case "red": return card.ustensils.find(i => i.toLowerCase() === t.name.toLowerCase()) // -> presque pareil mais retourne seulement le premier élément remplissant la condition
 
-      case "green":
-        return card.appliance.toLowerCase() === t.name.toLowerCase()
-    }
+    case "green":
+      return card.appliance.toLowerCase() === t.name.toLowerCase()
+  }
 
-    return false
+  return false
 }
 
 /**
@@ -124,20 +124,20 @@ export const filterCards = (value, list) => {
 
   const tagsElements = document.querySelector(".selecteds").querySelectorAll(".selected-list")
   const tags = []
-  for (let t of tagsElements)  {
-    tags.push( { name: t.textContent, color: t.getAttribute('color') } )
+  for (let t of tagsElements) {
+    tags.push({ name: t.textContent, color: t.getAttribute('color') })
   }
 
-  if (valueTest.length < 3 && tags.length<1) return list
+  if (valueTest.length < 3 && tags.length < 1) return list
 
   let filtered = []
   if (valueTest.length >= 3) {
 
     for (let filter of list) {
-      if (filter.name.toLowerCase().includes(valueTest) ||       
-        filter.ingredients.some((el) => el.ingredient.toLowerCase().includes(valueTest)) ||        
+      if (filter.name.toLowerCase().includes(valueTest) ||
+        filter.ingredients.some((el) => el.ingredient.toLowerCase().includes(valueTest)) ||
         filter.description.toLowerCase().includes(valueTest)
-         // || filter.appliance.toLowerCase().includes(valueTest) ||
+        // || filter.appliance.toLowerCase().includes(valueTest) ||
         // filter.ustensils.some((el) => el.toLowerCase().includes(valueTest) )
 
       ) {
@@ -196,7 +196,6 @@ export const updateCardFilters = (cards, tags) => {
   arr_a.forEach(e => document.getElementById("a-" + e).style.display = "block")
 
   /* Hiding the elements that are already selected. */
-  //TODO
   const tagsElements = document.querySelector(".selecteds").querySelectorAll(".selected-list")
   for (let t of tagsElements) {
     switch (t.getAttribute('color')) {
@@ -208,80 +207,3 @@ export const updateCardFilters = (cards, tags) => {
 
 }
 
-
-
-
-
-
-
- // cards.map(i => {
-    // i.ustensils.map(u => {
-    //   if (utensilFilter.indexOf(u.toLowerCase()) < 0) utensilFilter.push(u.toLowerCase())
-    // })
-    // i.ingredients.map(u => {
-    //   if (ingredientFilter.indexOf(u.ingredient.toLowerCase()) < 0) ingredientFilter.push(u.ingredient.toLowerCase())
-    // })
-    // if (deviceFilter.indexOf(i.appliance.toLowerCase()) < 0) deviceFilter.push(i.appliance.toLowerCase())
-  // })
-
-
-
- // ingredientFilter.map(e => {
-  //   const newIngr = document.createElement("p")
-  //   newIngr.classList.add("filter-grid")
-  //   newIngr.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-  //   newIngr.setAttribute("color", "blue")
-  //   newIngr.id = "i-" + e
-  //   ingredientFilterDisplay.appendChild(newIngr)
-  // })
-
-
-
-
-/* Creating a new paragraph element for "Device" and appending it to the DOM. */
-//   deviceFilter.map(e => {
-//     const newDevice = document.createElement("p")
-//     newDevice.classList.add("filter-grid")
-//     newDevice.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-//     newDevice.setAttribute("color", "green")
-//     newDevice.id = "a-" + e
-//     deviceFilterDisplay.appendChild(newDevice)
-//   })
-
-//   /* Creating a new paragraph element for "Utensil" and appending it to the DOM. */
-//   utensilFilter.map(e => {
-//     const newUtensil = document.createElement("p")
-//     newUtensil.classList.add("filter-grid")
-//     newUtensil.innerHTML = `<a href="javascript:void(0)" class="filter-value">${e}</a>`
-//     newUtensil.setAttribute("color", "red")
-//     newUtensil.id = "u-" + e
-//     utensilFilterDisplay.appendChild(newUtensil)
-//   })
-// }
-
-
-
-
-  // const filtered =
-  //   value.length >= 3 ?
-  //     list.filter(
-  //       (e) =>
-  //         e.name.toLowerCase().includes(value.toLowerCase())
-  //       // ||
-  //       // e.appliance.toLowerCase().includes(value.toLowerCase())
-  //       // ||
-  //       // e.ingredients.some((el) => el.ingredient.toLowerCase().includes(value.toLowerCase())) ||
-  //       // e.ustensils.some((el) => el.toLowerCase().includes(value.toLowerCase()))
-  //     ) : [...list]
-
-
-  
-  // cards.map(i => {
-  //   i.ingredients.map(u => {
-  //     if (arr_i.indexOf(u.ingredient.toLowerCase()) < 0) arr_i.push(u.ingredient.toLowerCase())
-  //   })
-  //   i.ustensils.map(u => {
-  //     if (arr_u.indexOf(u.toLowerCase()) < 0) arr_u.push(u.toLowerCase())
-  //   })
-  //   if (arr_a.indexOf(i.appliance.toLowerCase()) < 0) arr_a.push(i.appliance.toLowerCase())
-  // })

@@ -81,10 +81,6 @@ window.onload = () => {
       f.list.style.display = 'none'
       f.input.setAttribute("placeholder", capitalizeFL(f.key))
 
-      //   const container = document.querySelector(".button" + filter.color)
-      //   container.parentElement.classList.toggle("open")
-      //   //TODO : à retourner lors de la fermeture
-      //   container.lastElementChild.style.transform = "rotate(180deg)"
     })
 
     if (filter) {
@@ -210,8 +206,6 @@ window.onload = () => {
       searchBar.addEventListener("input", () => {
         updateCards()
       })
-
-
 
 
 
