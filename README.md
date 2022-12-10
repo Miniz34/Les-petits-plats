@@ -5,7 +5,7 @@
 - Implémentez un algorithme de recherche de recettes de cuisines pour le site **Les Petits Plats** grâce à des outils et méthodes
 
 - [Respect de la maquette FIGMA](https://www.figma.com/file/xqeE1ZKlHUWi2Efo8r73NK)
-- [Base de donnée JSON](https://github.com/git504/Les-Petits-Plats/blob/main/recipes.json)
+- [Base de donnée JSON](https://github.com/Miniz34/Les-petits-plats/blob/main/assets/recipes.json)
 
 - [Implémenter la fonctionnalité de recherche en respectant la "Fiche Cas d’utilisation"](https://github.com/Miniz34/Les-petits-plats/blob/main/assets/ressource/fiche_cas_utilisation.pdf)
 
