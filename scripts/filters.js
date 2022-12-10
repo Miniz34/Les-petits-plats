@@ -75,6 +75,12 @@ export const generateCardFilters = (cards) => {
 
 
 }
+/**
+ * It returns true if the card matches the tag, false otherwise.
+ * @param card - the card object
+ * @param t - {color: "blue", name: "tomato"}
+ * @returns A boolean value.
+ */
 
 const filterCondition = (card, t) => {
     switch (t.color) {
@@ -110,7 +116,6 @@ const filterCondition = (card, t) => {
 
 export const filterCards = (value, list) => {
 
-  console.log(list)
 
 
   const valueTest = value.toLowerCase()
